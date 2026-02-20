@@ -22,6 +22,11 @@
     <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
     <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
     <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+    <a class="tab-btn" href="ch7.html"><span class="tab-num">7장</span>품질 향상</a>
+    <a class="tab-btn" href="ch8.html"><span class="tab-num">8장</span>구조화</a>
+    <a class="tab-btn" href="ch9.html"><span class="tab-num">9장</span>비즈니스</a>
+    <a class="tab-btn" href="ch10.html"><span class="tab-num">10장</span>자동화</a>
+    <a class="tab-btn" href="ch11.html"><span class="tab-num">11장</span>인터랙티브</a>
   </nav>
 </div>
 
@@ -63,6 +68,31 @@
       <div class="toc-title">레시피 · 뒤집힌 상호작용 · 인지 검증자</div>
       <div class="toc-desc">단계별 지침을 받는 레시피, AI가 먼저 질문하는 뒤집힌 상호작용, 복잡한 문제를 분해하는 인지 검증자.</div>
     </a>
+    <a class="toc-card" href="ch7.html">
+      <div class="toc-num">07</div>
+      <div class="toc-title">품질 향상 패턴</div>
+      <div class="toc-desc">질문 개선·팩트체크·리플렉션. AI 답변의 정확성과 완성도를 높이는 3가지 핵심 기법.</div>
+    </a>
+    <a class="toc-card" href="ch8.html">
+      <div class="toc-num">08</div>
+      <div class="toc-title">구조화 패턴</div>
+      <div class="toc-desc">아웃라인 확장·컨텍스트 관리자·5W1H. 복잡한 내용을 체계적으로 정리하여 AI가 구조 있게 출력하게 만드는 기법.</div>
+    </a>
+    <a class="toc-card" href="ch9.html">
+      <div class="toc-num">09</div>
+      <div class="toc-title">비즈니스 프레임워크</div>
+      <div class="toc-desc">CO-STAR·FOCUS·ROSES·RISEN·BAB. 제안서, 협상, 분쟁, 스토리텔링 등 실무 비즈니스 문서에 특화된 5가지 프레임워크.</div>
+    </a>
+    <a class="toc-card" href="ch10.html">
+      <div class="toc-num">10</div>
+      <div class="toc-title">자동화·생산성 패턴</div>
+      <div class="toc-desc">메타언어 생성·무한 생성. 단축 명령어 설계와 변수 조합으로 반복 작업을 없애고 대량 결과물을 즉시 생성한다.</div>
+    </a>
+    <a class="toc-card" href="ch11.html">
+      <div class="toc-num">11</div>
+      <div class="toc-title">인터랙티브 패턴</div>
+      <div class="toc-desc">게임플레이 패턴. AI를 텍스트 기반 게임 엔진으로 전환. 장르·주인공·규칙만 바꾸면 어드벤처부터 유아 동화까지 즉시 설계 가능.</div>
+    </a>
   </div>
 
   <!-- ── AI 워크플로우 추천기 ──────────────── -->
@@ -90,6 +120,39 @@
 </div>
 
 <script>
+/* ── 모바일 사이드바 햄버거 버튼 ─────────── */
+(function injectMobileNav() {
+  const btn = document.createElement('button');
+  btn.className = 'menu-toggle';
+  btn.setAttribute('aria-label', '메뉴');
+  btn.innerHTML = '☰';
+
+  const overlay = document.createElement('div');
+  overlay.className = 'sidebar-overlay';
+
+  document.body.prepend(overlay);
+  document.body.prepend(btn);
+
+  const sidebar = document.querySelector('.header');
+  btn.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('sidebar-open');
+    overlay.classList.toggle('active', isOpen);
+    btn.innerHTML = isOpen ? '✕' : '☰';
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-open');
+    overlay.classList.remove('active');
+    btn.innerHTML = '☰';
+  });
+  sidebar.querySelectorAll('.tab-btn').forEach(a => {
+    a.addEventListener('click', () => {
+      sidebar.classList.remove('sidebar-open');
+      overlay.classList.remove('active');
+      btn.innerHTML = '☰';
+    });
+  });
+})();
+
 const WF_LABELS = {
   ch1: '1장 · 유형 & 샷 기법',
   ch2: '2장 · 페르소나 패턴',

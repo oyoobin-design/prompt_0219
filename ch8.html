@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>8장 구조화 패턴 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+    <a class="tab-btn" href="ch7.html"><span class="tab-num">7장</span>품질 향상</a>
+    <a class="tab-btn active" href="ch8.html"><span class="tab-num">8장</span>구조화</a>
+    <a class="tab-btn" href="ch9.html"><span class="tab-num">9장</span>비즈니스</a>
+    <a class="tab-btn" href="ch10.html"><span class="tab-num">10장</span>자동화</a>
+    <a class="tab-btn" href="ch11.html"><span class="tab-num">11장</span>인터랙티브</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">8장 · [B] 구조화 패턴</div>
+    <div class="chapter-title">아웃라인 확장 · 컨텍스트 관리자 · 5W1H</div>
+    <div class="chapter-desc">복잡한 내용을 체계적으로 정리하는 기법. AI가 맥락을 완전히 파악하고 구조 있게 출력하게 만든다.</div>
+  </div>
+
+  <!-- ── 17. 아웃라인 확장 패턴 ─────────── -->
+  <div class="section">
+    <div class="section-title">17. 아웃라인 확장 패턴 : 복잡한 주제와 아이디어의 구조화</div>
+    <div class="section-desc">한 번에 모든 내용을 요청하는 것이 아니라, 단계별로 프롬프트를 나눠 입력하는 방식. 복잡한 콘텐츠를 구조화할 때 AI의 출력 품질을 높이는 핵심 전략.</div>
+
+    <table class="compare-table" style="margin-bottom:20px;">
+      <thead><tr><th>방식</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td>한 번에 요청</td><td>AI가 모든 파트를 얕게 처리</td></tr>
+        <tr><td>단계별로 나누기</td><td>각 단계에서 집중도 높은 출력 + 불필요한 파트 건너뛰기 가능</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box">
+      <strong>핵심 흐름</strong> : <span style="color:var(--accent); font-family:var(--mono)">[1단계 대주제 뼈대] → [2단계 선택 파트 확장] → [3단계 최소 단위 완성]</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">1단계 : 대주제 아웃라인만 요청 <span class="badge badge-blue">뼈대만 잡기</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ol1-tmpl','ol1-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ol1-ex','ol1-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ol1-tmpl">
+          <textarea class="prompt-textarea" rows="6">아래 주제의 최상위 구조만 작성하세요.
+각 항목의 제목과 한 줄 설명만 포함하세요.
+세부 내용은 아직 작성하지 마세요.
+
+주제: [{구조화할 주제명 또는 과정명}]</textarea>
+        </div>
+        <div class="inner-panel" id="ol1-ex">
+          <div class="prompt-display">아래 주제의 최상위 구조만 작성하세요.
+각 항목의 제목과 한 줄 설명만 포함하세요.
+세부 내용은 아직 작성하지 마세요.
+
+주제: <span style="color:var(--accent)">무역 실무자를 위한 Python 자동화 8주 과정</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">1주차 — Python 환경 구축 및 기초 복습 : 무역 실무에 필요한 개발 환경 세팅
+2주차 — 엑셀/CSV 자동화 : openpyxl·pandas로 수출입 데이터 일괄 처리
+3주차 — API 연동 기초 : 관세청·무역통계 API 호출 및 데이터 수집
+4주차 — 이메일 자동 발송 : 거래처 리포트 자동화 파이프라인 구축
+5주차 — 웹 스크래핑 : 해외 바이어 정보·환율 데이터 수집
+6주차 — 데이터 시각화 : 수출입 추이 대시보드 제작
+7주차 — 스케줄러 &amp; 자동화 배포 : cron으로 무인 운영
+8주차 — 최종 프로젝트 발표 : 실무 자동화 시스템 완성 및 코드 리뷰</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">2단계 : 선택한 파트 확장 <span class="badge badge-green">필요한 파트만 상세화</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ol2-tmpl','ol2-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ol2-ex','ol2-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ol2-tmpl">
+          <textarea class="prompt-textarea" rows="4">[{파트명 또는 챕터명}]의 상세 아웃라인을 확장하세요.
+각 항목에 [{포함할 정보1}], [{포함할 정보2}], [{포함할 정보3}]을 포함하세요.</textarea>
+        </div>
+        <div class="inner-panel" id="ol2-ex">
+          <div class="prompt-display"><span style="color:var(--accent)">5주차</span>의 상세 아웃라인을 확장하세요.
+각 수업의 <span style="color:var(--accent)">학습 목표, 실습 내용, 예상 소요시간</span>을 포함하세요.</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">5주차 — 웹 스크래핑
+
+  1일차 | requests + BeautifulSoup 기초
+    · 학습 목표 : HTML 구조 이해 및 태그 파싱
+    · 실습 내용 : 해외 물류 요율표 페이지에서 가격 데이터 추출
+    · 소요시간 : 90분
+
+  2일차 | 동적 페이지 처리 (Selenium)
+    · 학습 목표 : JS 렌더링 페이지 크롤링
+    · 실습 내용 : 환율 미제공 사이트에서 실시간 환율 자동 수집
+    · 소요시간 : 120분
+
+  3일차 | 수집 데이터 엑셀 자동 저장
+    · 학습 목표 : 크롤링 결과를 정형 데이터로 가공
+    · 실습 내용 : 바이어 리스트 자동 업데이트 시트 구축
+    · 소요시간 : 90분</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">3단계 : 최소 단위까지 확장 <span class="badge badge-yellow">실제 사용 가능한 완성본</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ol3-tmpl','ol3-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ol3-ex','ol3-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ol3-tmpl">
+          <textarea class="prompt-textarea" rows="3">[{최소 단위 항목명}]의 [{산출물 형태1}]과 [{산출물 형태2}]를 완성본으로 작성하세요.</textarea>
+        </div>
+        <div class="inner-panel" id="ol3-ex">
+          <div class="prompt-display"><span style="color:var(--accent)">3일차 수업</span>의 <span style="color:var(--accent)">강의 스크립트와 실습 코드</span>를 완성본으로 작성하세요.</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 (일부)</div>
+            <div class="preview-content">── 강의 스크립트 (3일차 · 수집 데이터 엑셀 자동 저장) ──
+"오늘은 지난 시간에 수집한 크롤링 데이터를 엑셀 파일로 자동 저장하는 방법을 배웁니다.
+실무에서 바이어 리스트를 매일 수동으로 정리하고 계신 분들은 오늘 수업 후
+그 작업을 30초 안에 끝낼 수 있게 됩니다..."
+
+── 실습 코드 ──
+import requests
+from bs4 import BeautifulSoup
+import openpyxl
+
+url = "https://example-buyer-site.com/list"
+res = requests.get(url)
+soup = BeautifulSoup(res.text, "html.parser")
+
+wb = openpyxl.Workbook()
+ws = wb.active
+ws.append(["바이어명", "국가", "이메일"])
+
+for row in soup.select(".buyer-row"):
+    name = row.select_one(".name").text.strip()
+    country = row.select_one(".country").text.strip()
+    email = row.select_one(".email").text.strip()
+    ws.append([name, country, email])
+
+wb.save("buyer_list.xlsx")
+print("저장 완료 : buyer_list.xlsx")</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">심화 : 조건 포함 아웃라인 요청 <span class="badge badge-purple">비중·우선순위 함께 명시</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ol4-tmpl','ol4-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ol4-ex','ol4-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ol4-tmpl">
+          <textarea class="prompt-textarea" rows="10">아래 [{결과물 유형}]의 아웃라인을 작성하되,
+각 파트에 전체 대비 비중(%)과 우선순위를 함께 표시하세요.
+
+[조건]
+- [{비중 관련 조건}]
+- [{대상 수준 또는 독자}]
+- [{총량 또는 기간}]
+
+주제: [{구체적인 주제명}]</textarea>
+        </div>
+        <div class="inner-panel" id="ol4-ex">
+          <div class="prompt-display">아래 <span style="color:var(--accent)">교육과정</span>의 아웃라인을 작성하되,
+각 파트에 전체 대비 비중(%)과 우선순위를 함께 표시하세요.
+
+[조건]
+- 실습 코드가 이론 설명보다 비중이 높아야 합니다
+- 수강생 수준 : Python 기초 수료자
+- 총 교육 시간 : 40시간
+
+주제: <span style="color:var(--accent)">무역 데이터 자동화 심화과정</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">무역 데이터 자동화 심화과정 — 아웃라인
+
+파트                   | 비중  | 우선순위 | 배정시간
+──────────────────────────────────────────────────
+1. 환경 세팅 복습      |  5%  |  4순위  |  2h
+2. 데이터 수집 자동화  | 20%  |  1순위  |  8h
+3. 데이터 전처리       | 15%  |  2순위  |  6h
+4. 시각화 대시보드     | 20%  |  2순위  |  8h
+5. API 연동 실무       | 20%  |  1순위  |  8h
+6. 자동화 배포         | 15%  |  3순위  |  6h
+7. 최종 프로젝트       |  5%  |  1순위  |  2h
+──────────────────────────────────────────────────
+* 실습 : 이론 = 70% : 30%  (조건 충족)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 18. 컨텍스트 관리자 패턴 ──────── -->
+  <div class="section">
+    <div class="section-title">18. 컨텍스트 관리자 패턴 : AI 응답의 방향 조정하기</div>
+    <div class="section-desc">입력(Input) / 처리(Process) / 출력(Output) 구조로 AI가 처리할 내용과 산출물 형태를 명확히 분리하여 정밀한 응답을 유도하는 패턴. 대화 전체에 적용할 고정 컨텍스트를 선언하면 매번 조건을 반복할 필요가 없다.</div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 A : 입력-처리-출력 구조 <span class="badge badge-blue">단일 작업</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ctx1-tmpl','ctx1-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ctx1-ex','ctx1-tmpl')">✨ 예시 (마케팅 이메일)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ctx1-tmpl">
+          <textarea class="prompt-textarea" rows="14">#입력
+[{데이터명}] = '''
+    {분석하거나 처리할 원본 내용}
+'''
+
+#처리
+당신은 "{역할}"입니다. [{데이터명}] 내용을 전문가의 시각에서 분석하고,
+개선된 [{결과물 유형}]을 작성해주세요.
+- [{분석 기준 1}]
+- [{분석 기준 2}]
+- [{집중할 요소}], [{무시할 요소}]는 무시하세요.
+
+#출력
+[{출력 항목1}]
+[{출력 항목2}]</textarea>
+        </div>
+        <div class="inner-panel" id="ctx1-ex">
+          <div class="prompt-display">#입력
+[이메일] = '''
+    제목 : [제품명] 출시, 당신의 일상을 변화시킬 혁신적인 기술을 만나보세요!
+    안녕하세요, [고객명]님
+    최첨단 기술로 설계된 [제품명]은 당신의 생활을 한 단계 업그레이드 해 줄 준비가 되어있습니다.
+    주요 특징 : 초고속 처리 기능 / 사용자 친화적 인터페이스 / 친환경 소재
+    지금 바로 [웹사이트 링크]를 방문하세요.
+'''
+
+#처리
+당신은 <span style="color:var(--accent)">"마케팅 전문가"</span>입니다. [이메일] 내용을 전문가의 시각에서 분석하고,
+개선된 이메일을 작성해주세요.
+- 고객이 가장 관심을 가질 제품 기능과 혜택이 충분히 포함되어 있는지 분석하세요.
+- 감정적 요소가 잘 드러나는지 문제점 위주로 분석하세요.
+- <span style="color:var(--accent)">이메일의 길이나 문법적 정확성은 무시하세요.</span>
+
+#출력
+[분석 결과]
+[개선된 이메일]</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">[분석 결과]
+① 제품 기능 언급은 있으나 고객에게 주는 구체적 혜택(수치, 비교)이 없음
+② "혁신", "업그레이드" 등 추상적 표현 남발 → 신뢰도 저하
+③ 감정적 연결 없음 : 고객의 Pain Point를 건드리는 문장이 전무
+④ CTA(행동 유도)가 링크 하나뿐 → 클릭 동기 부족
+
+[개선된 이메일]
+제목 : 하루 2시간, 이제 되찾으세요 — [제품명] 출시
+
+안녕하세요, [고객명]님.
+매일 반복되는 [Pain Point 상황], 지치지 않으셨나요?
+[제품명]은 이 문제를 단 [수치]만에 해결합니다.
+
+실제 사용자 [OO%]가 첫 주부터 체감한 변화 :
+- [구체적 혜택 1 + 수치]
+- [구체적 혜택 2 + 수치]
+
+지금 바로 확인하세요 → [웹사이트 링크]
+(출시 기념 [혜택] — [마감일]까지만 제공)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 B : 컨텍스트 선언 블록 <span class="badge badge-green">단일 질문용</span></div>
+      <div class="section-desc">질문 앞에 나의 상황·수준·목적·제약을 선언하면 AI가 불필요한 방향을 제거하고 맥락에 맞는 답변을 생성한다.</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ctx2-tmpl','ctx2-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ctx2-ex','ctx2-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ctx2-tmpl">
+          <textarea class="prompt-textarea" rows="12">#컨텍스트 선언
+## 상황
+    {지금 처한 구체적 상황}
+## 나의 수준
+    {이 주제에 대한 사전 지식과 경험}
+## 목적
+    {이 답변으로 무엇을 결정하거나 실행할 것인가?}
+## 제약
+    {시간, 예산, 인력, 기술적 한계}
+## 이 대화에서 원하지 않는 것
+    {답변에서 제외해야 할 방향이나 내용}
+
+[{여기에 실제 질문 작성}]</textarea>
+        </div>
+        <div class="inner-panel" id="ctx2-ex">
+          <div class="prompt-display">#컨텍스트 선언
+## 상황
+    무역팀 3명이서 수출 서류를 전부 수작업으로 처리 중. 오류와 야근이 잦음.
+## 나의 수준
+    엑셀 중급 수준, Python 경험 없음, 외부 IT 인력 없음
+## 목적
+    이번 달 안에 반복 업무 1개 이상 자동화 적용
+## 제약
+    예산 월 100만원 이내, 개발자 고용 불가, 구축 기간 3개월 이내
+## 이 대화에서 원하지 않는 것
+    <span style="color:var(--accent)">ERP 도입 제안, 코딩 전제 솔루션, 장기 프로젝트성 방안</span>
+
+수출 서류 자동화를 위한 현실적인 첫 단계를 알려주세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 C : 대화 전체 고정 컨텍스트 선언 <span class="badge badge-purple">멀티턴용</span></div>
+      <div class="section-desc">한 번 선언하면 이후 모든 대화에 자동 적용. 매번 조건을 반복하지 않아도 AI가 컨텍스트 안에서만 응답한다.</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ctx3-tmpl','ctx3-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ctx3-ex','ctx3-tmpl')">✨ 예시 (의료기기 수출)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ctx3-tmpl">
+          <textarea class="prompt-textarea" rows="14">아래 조건은 이 대화 전체에 적용됩니다.
+모든 답변은 이 컨텍스트 안에서만 이루어지게 하세요.
+
+## [{상황 카테고리1}]
+    - [{항목1}]
+    - [{항목2}]
+    - [{항목3}]
+
+## [{상황 카테고리2}]
+    - [{항목1}]
+    - [{항목2}]
+
+## 절대 제외 사항
+    - [{제외 조건1}]
+    - [{제외 조건2}]
+    - [{제외 조건3}]
+
+이 컨텍스트를 이해했으면 "준비완료"라고만 답하세요.</textarea>
+        </div>
+        <div class="inner-panel" id="ctx3-ex">
+          <div class="prompt-display">아래 조건은 이 대화 전체에 적용됩니다.
+모든 답변은 이 컨텍스트 안에서만 이루어지게 하세요.
+
+## 회사 상황
+    - 업종 : 의료기기 중소기업
+    - 직원 : 30명, 무역팀 3명
+    - 주요 수출국 : 미국(60%), 독일(30%), 기타(10%)
+    - 연 수출액 : 약 50억원
+
+## 기술 환경
+    - 현재 시스템 : ERP 없음, 엑셀 중심
+    - 개발 인력 : 없음
+    - IT 예산 : 월 100만원 이내
+
+## 절대 제외 사항
+    - <span style="color:var(--accent)">대규모 시스템 도입 제안 (ERP)</span>
+    - <span style="color:var(--accent)">개발자 고용 전제의 솔루션</span>
+    - <span style="color:var(--accent)">6개월 이상 구축 기간이 필요한 방안</span>
+
+이 컨텍스트를 이해했으면 "준비완료"라고만 답하세요.</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">준비완료
+
+이후 질문 예시 → "수출 인보이스 작업을 줄일 방법 알려줘"
+AI 응답 방향 → ERP·개발자 없이 엑셀 매크로·노코드 툴 기반으로만 안내</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>패턴</th><th>적합한 상황</th></tr></thead>
+      <tbody>
+        <tr><td>패턴 A (입력-처리-출력)</td><td>단일 문서·데이터 분석/개선</td></tr>
+        <tr><td>패턴 B (컨텍스트 선언 블록)</td><td>한 번 질문, 맥락 정밀 제어</td></tr>
+        <tr><td>패턴 C (대화 전체 고정)</td><td>여러 번 질문, 조건 고정 유지</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 20. 5W1H 프레임워크 ─────────────── -->
+  <div class="section">
+    <div class="section-title">20. 5W1H 프레임워크 : 육하원칙으로 완성하는 전략 보고서</div>
+    <div class="section-desc">Who / What / When / Why / Where / How 6가지 변수를 먼저 정의한 뒤 AI에게 처리 역할과 출력 형식을 지정하면 맥락이 완전한 전략 문서가 생성된다. 정보가 많고 복잡한 기획·보고서 작성에 특히 강력한 구조화 도구.</div>
+
+    <div class="tip-box">
+      <strong>핵심 원리</strong> : 6개 변수를 채우는 것만으로 AI가 필요한 배경 정보를 모두 파악한다. 변수 하나만 바꿔도 전혀 다른 상황의 보고서를 즉시 재생성할 수 있다.
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">5W1H 프레임워크 <span class="badge badge-blue">전략 보고서</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'w1h-tmpl','w1h-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'w1h-ex','w1h-tmpl')">✨ 예시 (EU 수출 전략)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="w1h-tmpl">
+          <textarea class="prompt-textarea" rows="18">#입력
+[who]   = [{주체 : 누가}]
+[what]  = [{대상 : 무엇을}]
+[when]  = [{시점 : 언제}]
+[why]   = [{이유 : 왜}]
+[where] = [{장소/시장 : 어디서}]
+[how]   = [{방법 : 어떻게}]
+
+#처리
+당신은 [{전문가 역할}]입니다.
+상단의 5W1H 정보를 바탕으로 다음을 작성하세요.
+1. [{섹션1}]
+2. [{섹션2}]
+3. [{섹션3}]
+4. [{섹션4}]
+
+#출력
+[{결과물명}] = [{형식 및 분량 조건}]</textarea>
+        </div>
+        <div class="inner-panel" id="w1h-ex">
+          <div class="prompt-display">#입력
+[who]   = 중소 제조업체 (직원 30명)
+[what]  = 친환경 포장재를 유럽 시장에 수출
+[when]  = 2026년 하반기부터 본격 수출 시작
+[why]   = EU의 플라스틱 규제 강화로 친환경 포장재 수요 급증
+[where] = 독일, 프랑스, 네덜란드를 1차 타겟
+[how]   = 현지 유통사 파트너십을 통한 B2B
+
+#처리
+당신은 <span style="color:var(--accent)">EU 시장 진출 전문 컨설턴트</span>입니다.
+상단의 5W1H 정보를 바탕으로 다음을 작성하세요.
+1. 시장 진입 전략 (3가지 옵션 비교)
+2. 필수 인증 및 규제 대응 (CE 마크 등)
+3. 바이어 발굴 및 파트너십 전략
+4. 6개월 실행 로드맵
+
+#출력
+[전략 보고서] = <span style="color:var(--accent)">각 섹션별 300~500단어</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">[전략 보고서]
+
+1. 시장 진입 전략 (3가지 옵션 비교)
+   Option A. 직접 수출 (Direct Export)
+     - 장점 : 마진 극대화 / 단점 : 현지 네트워크 부재 리스크
+   Option B. 현지 유통사 파트너십 (권장)
+     - 장점 : 빠른 시장 진입, 규제 대응 지원 / 단점 : 마진 분배
+   Option C. 현지 법인 설립
+     - 장점 : 장기 브랜드 구축 / 단점 : 초기 비용 과다
+
+2. 필수 인증 및 규제 대응
+   - EU 포장재 지침(PPWD) 준수 필수
+   - CE 마크 취득 절차 및 예상 소요 기간 (6~9개월)
+   - 각국별 추가 요건 : 독일 GS 마크, 프랑스 NF 마크 ...
+
+3. 바이어 발굴 및 파트너십 전략
+   - Messe Frankfurt, Interpack 전시회 참가
+   - LinkedIn B2B 아웃리치 캠페인
+   - KOTRA 해외무역관 연계 바이어 매칭 활용 ...
+
+4. 6개월 실행 로드맵
+   1~2개월 : 인증 신청 및 유통사 리스트업
+   3~4개월 : 파트너십 협상 및 계약
+   5~6개월 : 첫 선적 및 현지 피드백 수집 ...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch7.html" class="chapter-nav-btn">← 7장</a>
+  <span class="chapter-page-info">8 / 11</span>
+  <a href="ch9.html" class="chapter-nav-btn">9장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>

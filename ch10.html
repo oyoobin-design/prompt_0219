@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10장 자동화·생산성 패턴 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+    <a class="tab-btn" href="ch7.html"><span class="tab-num">7장</span>품질 향상</a>
+    <a class="tab-btn" href="ch8.html"><span class="tab-num">8장</span>구조화</a>
+    <a class="tab-btn" href="ch9.html"><span class="tab-num">9장</span>비즈니스</a>
+    <a class="tab-btn active" href="ch10.html"><span class="tab-num">10장</span>자동화</a>
+    <a class="tab-btn" href="ch11.html"><span class="tab-num">11장</span>인터랙티브</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">10장 · [D] 자동화·생산성 패턴</div>
+    <div class="chapter-title">메타언어 생성 · 무한 생성</div>
+    <div class="chapter-desc">반복 작업을 줄이고 대량 생성하는 기법. 한 번 설계하면 무한히 재사용한다. 단축 명령어로 긴 조건을 대체하고, 변수 조합으로 동일 형식의 결과물을 대량 생성한다.</div>
+  </div>
+
+  <!-- ── 15. 메타언어 생성 패턴 ─────────── -->
+  <div class="section">
+    <div class="section-title">15. 메타언어 생성 패턴 : AI와 대화하는 나만의 비밀 코드</div>
+    <div class="section-desc">AI에게 특정 명령어(/명령어)에 대한 행동 지침을 미리 학습시켜, 긴 설명 없이도 원하는 결과물을 즉시 얻어내는 고도의 프롬프트 기법.</div>
+
+    <div class="tip-box">
+      <strong>핵심 흐름</strong> : <span style="color:var(--accent); font-family:var(--mono)">[명령어 사전 학습] → [단축 명령어 입력] → [정밀 결과물 즉시 출력]</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 A : 기본 명령어 정의 <span class="badge badge-blue">단일 명령어 세트</span></div>
+      <div class="section-desc">자주 쓰는 출력 형식을 명령어 하나로 고정. 대화 시작 시 한 번에 학습시키면 해당 대화 내내 유효하다.</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ml1-tmpl','ml1-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ml1-ex','ml1-tmpl')">✨ 예시 (무역 실무 세트)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ml1-tmpl">
+          <textarea class="prompt-textarea" rows="5">/[{명령어}] = [{출력 형식}], [{조건1}], [{조건2}], [{조건3}]
+
+(이후 /[{명령어}] 만 입력하면 위 조건을 자동 적용하여 출력)</textarea>
+        </div>
+        <div class="inner-panel" id="ml1-ex">
+          <div class="prompt-display">아래 명령어를 학습하세요. 이후 해당 명령어 입력 시 정의된 방식으로만 출력하세요.
+
+/요약 = 핵심만 3줄, 전문용어 제거, 무역 실무자 기준, [결론 → 이유] 순서로 작성
+
+/코드 = Python 작성, 주석 한국어, 예외처리 포함, 실행 가능한 완성 코드만 출력 (설명 생략)
+
+/비교 = 2~4개 대안을 표로 정리.
+        항목: [장점 | 단점 | 비용 | 난이도 | 추천상황]
+        마지막 행에 종합 추천 추가
+
+/아이디어 = 창의적이고 실현 가능한 대안 5가지 제시, 각 아이디어별 예상 효과 및 리스크 포함
+
+/검토 = 작성된 내용의 논리적 오류·누락된 점을 비판적으로 분석하고 개선 방향 제시
+
+/가이드 = 초보자가 따라 할 수 있는 Step-by-Step 절차 구성, 단계별 주의사항 포함</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 (/비교 사용 시)</div>
+            <div class="preview-content">사용자 입력 : /비교 엑셀 수작업 vs 파이썬 자동화 vs 노코드 툴
+
+| 항목     | 엑셀 수작업       | 파이썬 자동화    | 노코드 툴         |
+|----------|------------------|-----------------|------------------|
+| 장점     | 즉시 시작 가능   | 완전 자동화      | 코딩 불필요       |
+| 단점     | 오류·반복 작업   | 학습 시간 필요   | 기능 제한         |
+| 비용     | 무료             | 무료             | 월 5~20만원       |
+| 난이도   | 낮음             | 높음             | 중간              |
+| 추천상황 | 소량·비정기      | 대량·정기 반복   | 비개발자·중간규모  |
+| 종합추천 | -                | -                | ✅ 노코드 툴 우선 추천 |</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 B : 변수 기반 만능 명령어 <span class="badge badge-green">가변 결과물 생성</span></div>
+      <div class="section-desc">[대상]과 [옵션]을 바꿔가며 동일 형식의 결과물을 반복 생성. 구조 : /명령어:[대상]:[옵션]</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ml2-tmpl','ml2-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ml2-ex','ml2-tmpl')">✨ 예시 (출판사 편집자 모드)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ml2-tmpl">
+          <textarea class="prompt-textarea" rows="5">/[{명령어}]:[{대상}]:[{옵션}] 라고 요청하면,
+[{대상}]을 [{옵션}]에 맞춰 처리하고 [{추가 지시사항}]을 수행하라.</textarea>
+        </div>
+        <div class="inner-panel" id="ml2-ex">
+          <div class="prompt-display">[시스템 설정]
+[독자] = 초등학생
+[역할] = 출판사 편집자 (교양 도서 교정 중)
+
+[명령어 학습]
+/유:[단어]:[개수] = [단어]에 대해 [독자]가 이해할 수 있는 유의어 [개수] 제공
+                   + 가장 추천하는 유의어 선정
+
+/반:[단어]:[개수] = [단어]에 대해 [독자]가 이해할 수 있는 반의어 [개수] 제공
+                   + 가장 추천하는 반의어 선정
+
+/유반:[단어]:[개수] = 유의어와 반의어 검색을 동시에 수행</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 (/유반:신중하다:2 입력 시)</div>
+            <div class="preview-content">유의어 (초등학생 수준)
+  1. 조심스럽다
+  2. 꼼꼼하다
+  추천 : '조심스럽다' (일상에서 가장 많이 쓰여요!)
+
+반의어 (초등학생 수준)
+  1. 덜렁대다
+  2. 성급하다
+  추천 : '덜렁대다' (반대 상황을 설명하기 가장 쉬워요!)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 C : 복합 명령 &amp; 운영 팁 <span class="badge badge-yellow">Multi-Command</span></div>
+      <div class="section-desc">명령어를 조합하면 한 번에 복합 결과물 생성 가능. /리셋으로 대화가 길어졌을 때 맥락을 초기화할 수 있다.</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ml3-tmpl','ml3-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ml3-ex','ml3-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ml3-tmpl">
+          <textarea class="prompt-textarea" rows="4">/[{명령어1}] /[{명령어2}] [{처리할 내용}]
+
+/리셋 = 이전의 모든 맥락을 삭제하고 메타언어 규칙만 남긴 초기 상태로 복구</textarea>
+        </div>
+        <div class="inner-panel" id="ml3-ex">
+          <div class="prompt-display"><span style="color:var(--accent)">/요약 /비교</span>  FTA와 MFN 관세율의 차이
+→ 3줄 요약 + 비교표를 동시에 생성
+
+<span style="color:var(--accent)">/검토 /가이드</span>  아래 수출 절차 문서를 검토하고 개선된 가이드로 재작성해줘
+→ 논리 오류 분석 후 Step-by-Step 절차로 재구성
+
+<span style="color:var(--accent)">/리셋</span>
+→ 대화가 길어져 맥락이 꼬일 때 사용. 메타언어 규칙만 남기고 초기화</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 19. 무한 생성 패턴 ──────────────── -->
+  <div class="section">
+    <div class="section-title">19. 무한 생성 패턴 : 무한한 맞춤형 출력 생성하기</div>
+    <div class="section-desc">고정 프레임(변하지 않는 구조)과 변수(바꿀 수 있는 값)를 분리하여 변수 조합만 바꾸면 동일한 형식의 결과물을 무한히 생성하는 패턴. 이메일 템플릿, 상품 설명, 소셜 포스트 등에 특히 강력하다.</div>
+
+    <div class="tip-box">
+      <strong>핵심 공식</strong> : 변수 조합 수 = 각 변수의 선택지 수를 곱한 값<br>
+      예) 수신자 4 × 목적 4 × 톤 3 = <span style="color:var(--accent)">최대 48가지 조합 자동 생성 가능</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">만능 템플릿 구조 <span class="badge badge-blue">고정 프레임 + 변수</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>기본 구조</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="14">고정 프레임 :
+  "[{변하지 않는 출력 구조 설명}]"
+
+변수 :
+  {변수1} : [{선택지A}] / [{선택지B}] / [{선택지C}] / [{선택지D}]
+  {변수2} : [{선택지A}] / [{선택지B}] / [{선택지C}] / [{선택지D}]
+  {변수3} : [{선택지A}] / [{선택지B}] / [{선택지C}]
+
+생성 규칙 :
+  - [{분량 조건}]
+  - [{구조 조건}]
+  - [{언어·형식 조건}]
+  - [{기타 제약}]
+
+▶ 사용법 : {변수1} : [선택값] / {변수2} : [선택값] / {변수3} : [선택값]</textarea>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">예시 A : 무역 이메일 생성기 <span class="badge badge-green">48가지 조합</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'inf1-set','inf1-ex')">⚙ 생성기 설정</button>
+            <button class="inner-tab" onclick="innerTab(this,'inf1-ex','inf1-set')">✨ 출력 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="inf1-set">
+          <textarea class="prompt-textarea" rows="14">고정 프레임 :
+  "[{수신자 유형}]에게 [{목적}]을 전달하는 영문 비즈니스 이메일"
+
+변수 :
+  {수신자} : 신규 바이어 / 기존 거래처 / 포워더 / 관세사
+  {목적}   : 첫 연락 / 견적 요청 / 납기 연장 / 클레임 대응
+  {톤}     : 공식적 / 친근한 / 긴급한
+
+생성 규칙 :
+  - 제목(Subject Line) 포함
+  - 본문 3단락 구조 (인사 및 목적 → 핵심 내용 → 다음 단계 요청)
+  - 총 150단어 이내 / 영문 작성
+
+▶ 사용법 예) {수신자} : 신규 바이어 / {목적} : 첫 연락 / {톤} : 공식적</textarea>
+        </div>
+        <div class="inner-panel" id="inf1-ex">
+          <div class="prompt-display">조합 1 : <span style="color:var(--accent)">신규 바이어 / 첫 연락 / 공식적</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">Subject: Introduction – [Company Name] | Korean Cosmetic Ingredient Supplier
+
+Dear [Buyer's Name],
+
+My name is [Name] from [Company], a Korea-based manufacturer specializing
+in high-quality cosmetic raw materials. We have supplied to certified brands
+across Europe and Asia for over 10 years, with ISO 22716 and CGMP credentials.
+
+We believe our product line aligns well with your sourcing needs. Our lead time
+is 21 days with competitive FOB pricing starting from $XX/kg.
+
+I would appreciate the opportunity to share our full catalogue and schedule
+a brief call at your convenience.
+
+Best regards,
+[Name] | [Title] | [Company]</div>
+          </div>
+          <div style="margin-top:12px;">
+          <div class="prompt-display">조합 2 : <span style="color:var(--accent)">기존 거래처 / 납기 연장 / 긴급한</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">Subject: URGENT – Shipment Delay Notice | PO #[번호]
+
+Dear [Name],
+
+I'm writing to inform you of an unexpected delay affecting your order PO #[번호].
+Due to [brief reason], we now estimate shipment by [new date] — a delay of
+approximately [N] business days.
+
+We sincerely apologize and are prioritizing your order. Air freight is available
+as an alternative if your timeline is critical, and we will absorb the cost difference.
+
+Please confirm your preferred solution by [date] so we can act immediately.
+
+Regards, [Name] | [Company]</div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">예시 B : 상품 설명 대량 생성기 <span class="badge badge-yellow">쇼핑몰 더미 텍스트</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'inf2-set','inf2-ex')">⚙ 생성기 설정</button>
+            <button class="inner-tab" onclick="innerTab(this,'inf2-ex','inf2-set')">✨ 출력 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="inf2-set">
+          <textarea class="prompt-textarea" rows="13">고정 프레임 :
+  "[{카테고리}] 상품의 [{플랫폼}] 판매용 상품 설명"
+
+변수 :
+  {카테고리} : 스킨케어 / 건강식품 / 주방용품 / 의류
+  {플랫폼}   : 아마존(영문) / 네이버스토어(국문) / 라자다(영문)
+  {강조 포인트} : 가성비 / 프리미엄 / 친환경 / 기능성
+
+생성 규칙 :
+  - 상품명(제목) + 핵심 특징 3가지(불릿 포인트) + 상세 설명 2문장
+  - 아마존 영문 : 200자 이내 / 네이버 국문 : 150자 이내
+
+▶ 사용법 예) {카테고리} : 스킨케어 / {플랫폼} : 아마존 / {강조 포인트} : 프리미엄</textarea>
+        </div>
+        <div class="inner-panel" id="inf2-ex">
+          <div class="prompt-display">조합 : <span style="color:var(--accent)">스킨케어 / 아마존 / 프리미엄</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">Title: [Brand] Premium Korean Toner – Hydration &amp; Brightening, 150ml
+
+  · Formulated with 92% natural ingredients, free from parabens &amp; sulfates
+  · Clinically tested: 98% of users reported improved skin texture in 4 weeks
+  · CGMP certified, cruelty-free, suitable for all skin types
+
+Experience the pinnacle of K-beauty skincare with our award-winning toner,
+crafted in Korea's leading CGMP-certified facility. Lightweight yet deeply
+nourishing — your skin's new daily essential.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">예시 C : 소셜미디어 포스트 대량 생성기 <span class="badge badge-purple">SNS 콘텐츠</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'inf3-set','inf3-ex')">⚙ 생성기 설정</button>
+            <button class="inner-tab" onclick="innerTab(this,'inf3-ex','inf3-set')">✨ 출력 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="inf3-set">
+          <textarea class="prompt-textarea" rows="13">고정 프레임 :
+  "[{브랜드 유형}]의 [{플랫폼}] 게시물"
+
+변수 :
+  {브랜드 유형} : K-뷰티 브랜드 / 무역회사 / 제조업체 / 스타트업
+  {플랫폼}      : 인스타그램 / LinkedIn / X(트위터)
+  {목적}        : 신제품 홍보 / 브랜드 스토리 / 바이어 모집 / 업계 인사이트
+
+생성 규칙 :
+  - 인스타그램 : 이모지 포함, 해시태그 5개, 150자 이내
+  - LinkedIn   : 전문적 톤, 해시태그 3개, 200자 이내
+  - X(트위터)  : 280자 이내, 핵심 메시지 한 줄 강조
+
+▶ 사용법 예) {브랜드} : K-뷰티 / {플랫폼} : LinkedIn / {목적} : 바이어 모집</textarea>
+        </div>
+        <div class="inner-panel" id="inf3-ex">
+          <div class="prompt-display">조합 : <span style="color:var(--accent)">K-뷰티 / LinkedIn / 바이어 모집</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">🌿 Seeking Trusted Distributors for Our K-Beauty Line in Europe &amp; North America
+
+We're a CGMP-certified Korean skincare manufacturer with 10+ years of OEM/ODM
+experience, currently expanding our global distribution network.
+
+If you're a retailer or distributor looking for a reliable Korean supplier —
+let's connect. We offer competitive pricing, 21-day lead times, and full
+regulatory support for EU/US markets.
+
+DM us or visit [link] to request our catalogue.
+
+#KBeauty #KoreanCosmetics #GlobalDistributor #B2B #Skincare</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>패턴</th><th>핵심</th><th>활용 분야</th></tr></thead>
+      <tbody>
+        <tr><td>메타언어 패턴 A</td><td>단일 명령어로 출력 형식 고정</td><td>요약, 코드, 비교표, 검토</td></tr>
+        <tr><td>메타언어 패턴 B</td><td>/명령어:[대상]:[옵션] 가변 구조</td><td>유의어, 반의어, 번역 등 반복 처리</td></tr>
+        <tr><td>메타언어 패턴 C</td><td>명령어 조합으로 복합 출력</td><td>분석+가이드 동시 생성</td></tr>
+        <tr><td>무한 생성 패턴</td><td>변수 조합으로 대량 생성</td><td>이메일, 상품 설명, SNS 포스트</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch9.html" class="chapter-nav-btn">← 9장</a>
+  <span class="chapter-page-info">10 / 11</span>
+  <a href="ch11.html" class="chapter-nav-btn">11장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>

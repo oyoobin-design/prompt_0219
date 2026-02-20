@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>7장 품질 향상 패턴 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+    <a class="tab-btn active" href="ch7.html"><span class="tab-num">7장</span>품질 향상</a>
+    <a class="tab-btn" href="ch8.html"><span class="tab-num">8장</span>구조화</a>
+    <a class="tab-btn" href="ch9.html"><span class="tab-num">9장</span>비즈니스</a>
+    <a class="tab-btn" href="ch10.html"><span class="tab-num">10장</span>자동화</a>
+    <a class="tab-btn" href="ch11.html"><span class="tab-num">11장</span>인터랙티브</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">7장 · [A] 품질 향상 패턴</div>
+    <div class="chapter-title">질문 개선 · 팩트체크 · 리플렉션</div>
+    <div class="chapter-desc">AI 답변의 정확성·완성도를 높이는 기법. 잘못된 질문을 먼저 교정하고, 정보를 검증하며, AI 스스로 결과물을 퇴고하게 만든다.</div>
+  </div>
+
+  <!-- ── 13. 질문 개선 패턴 ──────────────── -->
+  <div class="section">
+    <div class="section-title">13. 질문 개선 패턴 : 질문을 질문하기</div>
+    <div class="section-desc">AI에게 사용자의 질문 자체를 먼저 분석하고 더 나은 질문으로 업그레이드하게 하는 패턴. 모호하거나 전제가 잘못된 질문을 먼저 교정함으로써 더 정확하고 유용한 답변을 얻는다.</div>
+
+    <div class="tip-box">
+      <strong>핵심 원리</strong> : 질문의 품질이 답변의 품질을 결정한다. AI에게 "먼저 질문을 분석하라"고 지시하면 맥락 오류를 사전에 차단할 수 있다.
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">방법 1 : 단순 개선형 <span class="badge badge-blue">개선 후 즉시 답변</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'q1-tmpl','q1-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'q1-ex','q1-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="q1-tmpl">
+          <textarea class="prompt-textarea" rows="5">아래 질문을 더 명확하고 답변 가능한 형태로 개선한 뒤,
+개선된 질문으로 답변해. 개선한 이유도 한 줄로 설명해.
+
+질문 : [{원래 질문}]</textarea>
+        </div>
+        <div class="inner-panel" id="q1-ex">
+          <div class="prompt-display">아래 질문을 더 명확하고 답변 가능한 형태로 개선한 뒤,
+개선된 질문으로 답변해. 개선한 이유도 한 줄로 설명해.
+
+질문 : <span style="color:var(--accent)">AI를 무역에 활용하려면 어떻게 해야 하나요?</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">[개선된 질문]
+"수출입 서류 작성과 바이어 이메일 업무를 담당하는 중소기업 무역 실무자가
+ChatGPT 또는 Claude를 활용하여 반복 업무를 줄이고 싶을 때,
+즉시 적용 가능한 활용법 3가지를 단계별로 알려주세요."
+
+[개선 이유]
+'무역'과 'AI 활용'의 범위가 너무 넓어 구체적인 실무 업무와 수준을 명시해야
+실행 가능한 답변이 가능하기 때문.
+
+[답변]
+1. 바이어 이메일 초안 자동 생성 : 거래 조건·제품 정보를 입력하면 영문 이메일 즉시 생성
+2. 수출 서류 초안 작성 : 인보이스·패킹리스트 항목을 프롬프트로 구조화하여 초안 생성
+3. 관세·인증 정보 요약 : 복잡한 규정 문서를 붙여넣고 핵심만 요약 요청</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">방법 2 : 다방향 분기형 <span class="badge badge-green">3가지 해석 → 선택 후 답변</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'q2-tmpl','q2-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'q2-ex','q2-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="q2-tmpl">
+          <textarea class="prompt-textarea" rows="6">제 질문을 3가지 다른 해석으로 개선해 주세요.
+각 버전이 어떤 상황에 맞는지 설명하고,
+제가 선택하면 그것으로 답하세요.
+
+질문 : [{원래 질문}]</textarea>
+        </div>
+        <div class="inner-panel" id="q2-ex">
+          <div class="prompt-display">제 질문을 3가지 다른 해석으로 개선해 주세요.
+각 버전이 어떤 상황에 맞는지 설명하고,
+제가 선택하면 그것으로 답하세요.
+
+질문 : <span style="color:var(--accent)">수출 자동화는 어떻게 시작하나요?</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">버전 A — 업무 프로세스 자동화 관점
+  "개발 인력 없이 엑셀·노코드 툴로 수출 서류·이메일 업무를 자동화하는 첫 단계는?"
+  → 적합한 상황 : IT 예산이 적고 빠르게 시작하고 싶은 중소기업 실무자
+
+버전 B — Python 코딩 자동화 관점
+  "Python 기초를 배운 무역 실무자가 수출 데이터 정리·보고서 생성을 자동화하기 위한 첫 번째 실습 과제는?"
+  → 적합한 상황 : 코딩을 배워서 직접 구현하고 싶은 실무자
+
+버전 C — 물류·통관 자동화 관점
+  "중소 수출기업이 통관·물류 추적 업무를 자동화하기 위해 활용 가능한 기존 SaaS 툴과 도입 순서는?"
+  → 적합한 상황 : 물류·통관 프로세스 효율화가 우선인 기업
+
+어떤 버전으로 답변드릴까요?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">방법 3 : 전제 교정형 <span class="badge badge-yellow">잘못된 전제 지적 → 교정된 질문으로 답변</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'q3-tmpl','q3-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'q3-ex','q3-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="q3-tmpl">
+          <textarea class="prompt-textarea" rows="6">제 질문에 잘못된 전제나 오해가 있으면, 먼저 그것을 지적하고
+교정된 질문으로 다시 물어봐 주세요.
+그다음 교정된 질문에 답하세요.
+
+질문 : [{원래 질문}]</textarea>
+        </div>
+        <div class="inner-panel" id="q3-ex">
+          <div class="prompt-display">제 질문에 잘못된 전제나 오해가 있으면, 먼저 그것을 지적하고
+교정된 질문으로 다시 물어봐 주세요.
+그다음 교정된 질문에 답하세요.
+
+질문 : <span style="color:var(--accent)">FTA가 적용되면 관세를 안 내도 되는 건가요?</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">[전제 교정]
+이 질문에는 두 가지 잘못된 전제가 있습니다.
+① "FTA 적용 = 관세 면제"가 아닙니다.
+   협정마다 세율이 다르며 단계적으로 인하되는 품목도 많습니다.
+② FTA 혜택을 받으려면 원산지 증명서 발급 등 별도 절차가 필요합니다.
+
+[교정된 질문]
+"한-미 FTA 적용 시, 특정 품목의 관세율이 얼마나 인하되며,
+혜택을 받기 위해 수출자가 준비해야 할 원산지 증명 절차는 무엇인가요?"
+
+[답변]
+한-미 FTA 기준, 대부분의 섬유류는 협정 발효 즉시 0% 또는 단계적 철폐...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>방법</th><th>언제 사용</th></tr></thead>
+      <tbody>
+        <tr><td>방법 1 (단순 개선)</td><td>빠르게 개선된 답변이 필요할 때</td></tr>
+        <tr><td>방법 2 (다방향 분기)</td><td>내 질문의 방향을 아직 확신하지 못할 때</td></tr>
+        <tr><td>방법 3 (전제 교정)</td><td>상식처럼 알고 있지만 확신이 없는 정보를 물어볼 때</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 14. 팩트체크 목록 패턴 ──────────── -->
+  <div class="section">
+    <div class="section-title">14. 팩트체크 목록 패턴 : 정보 검증을 위한 목록 작성하기</div>
+    <div class="section-desc">AI 답변 안에 포함된 검증 필요 항목을 스스로 추출·목록화하게 지시하는 패턴. 법규·세율·인증처럼 자주 바뀌거나 틀리면 손해가 큰 정보에 필수적으로 활용한다.</div>
+
+    <div class="tip-box">
+      <strong>핵심 원리</strong> : AI는 확신 있게 틀린 정보도 자신 있게 말할 수 있다(환각 현상). 팩트체크 목록을 요청하면 AI 스스로 불확실한 항목을 표시하게 된다.
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">방법 1 : 기본 검증 목록형 <span class="badge badge-blue">신호등 색상 분류</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'fc1-tmpl','fc1-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'fc1-ex','fc1-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="fc1-tmpl">
+          <textarea class="prompt-textarea" rows="10">아래 질문에 답변하세요.
+답변 끝에 반드시 팩트체크 목록을 작성하세요.
+
+팩트체크 목록 형식 :
+  🔴 반드시 확인 : 틀리면 큰 피해가 생기는 항목
+  🟡 확인 권장   : 바뀔 가능성이 있는 항목
+  🟢 참고 수준   : 개략적으로 맞지만 세부는 다를 수 있는 항목
+
+질문 : [{검증이 필요한 질문}]</textarea>
+        </div>
+        <div class="inner-panel" id="fc1-ex">
+          <div class="prompt-display">아래 질문에 답변하세요.
+답변 끝에 반드시 팩트체크 목록을 작성하세요.
+
+팩트체크 목록 형식 :
+  🔴 반드시 확인 : 틀리면 큰 피해가 생기는 항목
+  🟡 확인 권장   : 바뀔 가능성이 있는 항목
+  🟢 참고 수준   : 개략적으로 맞지만 세부는 다를 수 있는 항목
+
+질문 : <span style="color:var(--accent)">한-미 FTA 적용 시 원산지 증명서 발급 절차는?</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">[답변]
+한-미 FTA 원산지 증명서는 크게 두 가지 방식으로 발급됩니다.
+① 기관 발급 : 대한상공회의소 또는 세관에서 발급
+② 자율 발급 : 수출자가 직접 원산지 신고서 작성 (인증수출자 필요)
+
+## 팩트체크 필요 항목
+
+🔴 반드시 확인
+  - 인증수출자 자격 요건 및 유효기간
+    → 요건 미충족 시 자율 발급 불가, 추가 관세 부과 가능
+    → 확인처 : 관세청 (customs.go.kr)
+  - 원산지 판정 기준 (세번변경·부가가치 기준)
+    → 확인처 : FTA 포털 (ftaportal.go.kr)
+
+🟡 확인 권장
+  - 원산지 증명서 유효기간 (통상 1년, 협정마다 상이)
+  - 자율 발급 서식 최신 버전 여부
+
+🟢 참고 수준
+  - 일반적인 발급 소요 기간 (기관 발급 기준 약 1~3일)
+  - 발급 수수료 (대한상의 기준 약 5,000~10,000원)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">방법 2 : 신뢰도 점수형 <span class="badge badge-green">각 사실에 확률 표시</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'fc2-tmpl','fc2-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'fc2-ex','fc2-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="fc2-tmpl">
+          <textarea class="prompt-textarea" rows="6">아래 질문에 답변하되,
+각 주요 사실에 신뢰도 점수(0%~100%)와 그 점수를 준 이유를 함께 표시하세요.
+
+형식 : {사실 내용} [신뢰도 : N%] (이유 : ~~)
+
+질문 : [{검증이 필요한 질문}]</textarea>
+        </div>
+        <div class="inner-panel" id="fc2-ex">
+          <div class="prompt-display">아래 질문에 답변하되,
+각 주요 사실에 신뢰도 점수(0%~100%)와 그 점수를 준 이유를 함께 표시하세요.
+
+형식 : {사실 내용} [신뢰도 : N%] (이유 : ~~)
+
+질문 : <span style="color:var(--accent)">베트남 수출 시 주요 인증 요건과 관세율은?</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">한-베트남 FTA(VKFTA) 적용 시 대부분의 공산품 관세율은 0~5% 수준입니다.
+[신뢰도 : 75%] (이유 : 품목별·HS CODE별로 세율이 크게 다르며, 협정 개정 가능성 있음)
+
+전기·전자제품 수출 시 TCVN(베트남 국가표준) 인증이 요구됩니다.
+[신뢰도 : 85%] (이유 : 규제 품목이 명확하나, 품목 범위가 주기적으로 확대됨)
+
+화장품 수출 시 보건부(MOH) 사전 허가 또는 신고가 필요합니다.
+[신뢰도 : 90%] (이유 : 규정이 안정적이나 신고 절차가 연도별로 소폭 변경됨)
+
+일반 소비재의 통관 소요 기간은 평균 3~7일입니다.
+[신뢰도 : 60%] (이유 : 품목·항구·시기에 따라 편차가 매우 크며 변동성 높음)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">방법 3 : 답변 전 위험 예고형 <span class="badge badge-yellow">틀리기 쉬운 항목 먼저 경고</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'fc3-tmpl','fc3-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'fc3-ex','fc3-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="fc3-tmpl">
+          <textarea class="prompt-textarea" rows="6">답변을 작성하기 전에, 이 주제에 대해 틀리기 쉬운 항목이 무엇인지 먼저 나열하세요.
+그 항목을 특히 주의하며 답변을 작성하고, 마지막에 검증 목록을 제시하세요.
+
+질문 : [{검증이 필요한 질문}]</textarea>
+        </div>
+        <div class="inner-panel" id="fc3-ex">
+          <div class="prompt-display">답변을 작성하기 전에, 이 주제에 대해 틀리기 쉬운 항목이 무엇인지 먼저 나열하세요.
+그 항목을 특히 주의하며 답변을 작성하고, 마지막에 검증 목록을 제시하세요.
+
+질문 : <span style="color:var(--accent)">미국으로 의료기기를 처음 수출할 때 필요한 FDA 등록 절차는?</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">[위험 예고]
+이 주제에서 자주 틀리는 항목 :
+① Class I / II / III 분류를 잘못 적용하는 경우
+② 510(k) 면제 품목을 면제가 아닌 것으로 오해하는 경우
+③ 제조업체 등록과 제품 등록을 혼동하는 경우
+④ FDA 등록 갱신 주기(매년 10월)를 놓치는 경우
+
+[답변 — 위 항목 주의하여 작성]
+...
+
+[검증 목록]
+🔴 반드시 확인 : 우리 제품의 Class 분류 (FDA 510(k) 데이터베이스 조회 필수)
+🟡 확인 권장   : 2024년 이후 변경된 UDI(고유기기식별) 의무 적용 범위
+🟢 참고 수준   : 일반적인 510(k) 심사 소요 기간 (약 3~12개월)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 16. 리플렉션 패턴 ───────────────── -->
+  <div class="section">
+    <div class="section-title">16. 리플렉션 패턴 : AI를 위한 자기성찰의 거울</div>
+    <div class="section-desc">AI가 초안을 작성한 뒤, 스스로 결과물을 검토(비평)하고 수정(개선)하게 함으로써 최종 답변의 품질을 비약적으로 높이는 기법. 환각(Hallucination) 현상을 줄이고 논리적 완결성을 높이는 데 탁월하다.</div>
+
+    <div class="tip-box">
+      <strong>핵심 흐름</strong> : <span style="color:var(--accent); font-family:var(--mono)">[초안 생성] → [자기 비평] → [개선본 출력]</span>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 A : 3단계 계통적 리플렉션 <span class="badge badge-blue">기본형</span></div>
+      <div class="section-desc">한 번에 완성도 높은 결과물이 필요할 때. 코드 작성, 문서 작성, 기획서 등 모든 결과물에 적용 가능.</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'rf1-tmpl','rf1-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'rf1-ex','rf1-tmpl')">✨ 예시 (파이썬 코드)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="rf1-tmpl">
+          <textarea class="prompt-textarea" rows="12">아래 요청을 3단계로 수행하세요.
+
+1단계 [초안]
+  요청에 대한 첫 번째 답변을 작성하세요.
+
+2단계 [비평]
+  초안의 약점, 누락된 정보, 개선점을 스스로 냉정하게 분석하세요.
+
+3단계 [개선]
+  비평 내용을 모두 반영하여 완성된 최종 버전을 작성하세요.
+
+요청: [{실제 요청 내용}]</textarea>
+        </div>
+        <div class="inner-panel" id="rf1-ex">
+          <div class="prompt-display">아래 요청을 3단계로 수행하세요.
+
+1단계 [초안]
+  요청에 대한 첫 번째 답변을 작성하세요.
+
+2단계 [비평]
+  <span style="color:var(--accent)">'시니어 개발자'의 관점에서</span> 방금 작성한 코드를 검토하고 아래 질문에 답하세요.
+  - 코드의 성능(시간 복잡도) 측면에서 개선할 점은?
+  - 라이브러리 설치 안내 등 초보 사용자가 놓칠 수 있는 설명이 있는가?
+  - 예외 상황(파일 미존재 등)에 대한 대비가 충분한가?
+
+3단계 [개선]
+  비평 내용을 반영하여 완성된 최종 코드를 작성하세요.
+
+요청: <span style="color:var(--accent)">엑셀 파일을 읽어 HS CODE(품목분류번호) 별로 정렬하는 파이썬 코드 작성</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">[초안]
+import pandas as pd
+df = pd.read_excel("trade_data.xlsx")
+df_sorted = df.sort_values("HS_CODE")
+df_sorted.to_excel("sorted_output.xlsx", index=False)
+
+[비평]
+- 파일이 없을 경우 오류 발생 → try/except 추가 필요
+- pandas, openpyxl 설치 안내 없음 → 초보자 진입 장벽
+- HS CODE 컬럼명이 다를 경우 대비 없음 → 컬럼 확인 로직 필요
+
+[개선본]
+# 설치 필요: pip install pandas openpyxl
+import pandas as pd
+
+try:
+    df = pd.read_excel("trade_data.xlsx")
+    if "HS_CODE" not in df.columns:
+        raise ValueError(f"HS_CODE 컬럼 없음. 현재 컬럼: {df.columns.tolist()}")
+    df_sorted = df.sort_values("HS_CODE")
+    df_sorted.to_excel("sorted_output.xlsx", index=False)
+    print("정렬 완료 : sorted_output.xlsx 저장됨")
+except FileNotFoundError:
+    print("오류 : trade_data.xlsx 파일을 찾을 수 없습니다.")
+except ValueError as e:
+    print(f"오류 : {e}")</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 B : 반복 정제 <span class="badge badge-green">Iterative Refinement</span></div>
+      <div class="section-desc">N번 반복 개선하며 점진적으로 품질을 높임. 각 회차마다 변경 이유를 로그로 남겨 추적 가능.</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'rf2-tmpl','rf2-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'rf2-ex','rf2-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="rf2-tmpl">
+          <textarea class="prompt-textarea" rows="6">초안을 작성하고 총 [{N}]번 스스로 개선하세요.
+각 반복 회차마다 '무엇을 왜 바꿨는지'에 대해 짧은 로그를 남기고
+최종 결과물을 출력하세요.
+
+요청: [{실제 요청 내용}]</textarea>
+        </div>
+        <div class="inner-panel" id="rf2-ex">
+          <div class="prompt-display">초안을 작성하고 총 <span style="color:var(--accent)">2번</span> 스스로 개선하세요.
+각 반복 회차마다 '무엇을 왜 바꿨는지'에 대해 짧은 로그를 남기고
+최종 결과물을 출력하세요.
+
+요청: <span style="color:var(--accent)">미국 바이어에게 보낼 첫 거래 제안 이메일 작성</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">[초안]
+Dear Buyer, We would like to propose a business opportunity...
+
+[개선 1회차 로그]
+- 수신자 이름 없음 → 개인화 문구 추가
+- 제품 강점 미언급 → 핵심 차별점 1줄 추가
+→ 수정본 작성
+
+[개선 2회차 로그]
+- CTA(행동 유도) 없음 → 미팅 제안 문장 추가
+- 문장이 길어 가독성 저하 → 문단 분리
+→ 최종본 작성
+
+[최종본]
+Dear [Name], ...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">패턴 C : CoT + 수치 평가 리플렉션 <span class="badge badge-purple">고급형</span></div>
+      <div class="section-desc">문서·보고서의 완결성을 수치로 보장할 때. 7점 미만 항목은 자동 보완하도록 강제하여 완성도를 보장.</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'rf3-tmpl','rf3-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'rf3-ex','rf3-tmpl')">✨ 예시 (수출 체크리스트)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="rf3-tmpl">
+          <textarea class="prompt-textarea" rows="12">아래 요청에 대해 문서를 작성하세요.
+문서 완성 후 아래 [{N}]가지 기준으로 평가를 수행하세요.
+각 기준별로 점수 산정 근거를 먼저 설명한 후 10점 만점의 점수를 부여하세요.
+(7점 미만 항목은 반드시 보완하여 최종안 제출)
+
+[평가 기준]
+1. [{기준1}] : [{설명}]
+2. [{기준2}] : [{설명}]
+3. [{기준3}] : [{설명}]
+
+요청: [{실제 요청 내용}]</textarea>
+        </div>
+        <div class="inner-panel" id="rf3-ex">
+          <div class="prompt-display">아래 요청에 대해 문서를 작성하세요.
+문서 완성 후 아래 5가지 기준으로 평가를 수행하세요.
+각 기준별로 점수 산정 근거를 먼저 설명한 후 10점 만점의 점수를 부여하세요.
+(7점 미만 항목은 반드시 보완하여 최종안 제출)
+
+[평가 기준]
+1. 명확성  : 전문 용어가 쉽게 풀이되었는가?
+2. 완결성  : 필수 서류와 절차가 모두 포함되었는가?
+3. 정확성  : 현행 수출 법규에 어긋나는 내용이 없는가?
+4. 실용성  : 소기업이 즉시 실무에 적용 가능한가?
+5. 간결성  : 불필요한 서술 없이 핵심 위주인가?
+
+요청: <span style="color:var(--accent)">첫 수출을 준비하는 소기업을 위한 단계별 체크리스트 작성</span></div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">[초안 체크리스트]
+1. 바이어 계약서 검토 및 서명
+2. HS CODE 확인 및 관세율 조회
+3. 수출 신고서 작성 (관세사 의뢰)
+...
+
+[자기 평가]
+1. 명확성  : HS CODE 설명 없이 용어만 사용 → 6점 ⚠️ 보완 필요
+2. 완결성  : L/C 개설 절차 누락 → 6점 ⚠️ 보완 필요
+3. 정확성  : 현행 법규 기준 부합 → 8점
+4. 실용성  : 즉시 활용 가능한 체크박스 형식 → 8점
+5. 간결성  : 일부 항목 중복 → 7점
+
+[최종 보완본]
+(1·2번 기준 보완 반영하여 재작성)
+...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch6.html" class="chapter-nav-btn">← 6장</a>
+  <span class="chapter-page-info">7 / 11</span>
+  <a href="ch8.html" class="chapter-nav-btn">8장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>

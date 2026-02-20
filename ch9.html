@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9장 비즈니스 프레임워크 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+    <a class="tab-btn" href="ch7.html"><span class="tab-num">7장</span>품질 향상</a>
+    <a class="tab-btn" href="ch8.html"><span class="tab-num">8장</span>구조화</a>
+    <a class="tab-btn active" href="ch9.html"><span class="tab-num">9장</span>비즈니스</a>
+    <a class="tab-btn" href="ch10.html"><span class="tab-num">10장</span>자동화</a>
+    <a class="tab-btn" href="ch11.html"><span class="tab-num">11장</span>인터랙티브</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">9장 · [C] 비즈니스 프레임워크</div>
+    <div class="chapter-title">CO-STAR · FOCUS · ROSES · RISEN · BAB</div>
+    <div class="chapter-desc">실무 문서·협상·전략에 특화된 기법. 특정 비즈니스 상황에 최적화된 문서를 즉시 생성한다. 각 프레임워크는 설득 문서, 아웃리치 메시지, 협상 전략, 분쟁 해결, 스토리텔링에 특화되어 있다.</div>
+  </div>
+
+  <!-- ── 21. CO-STAR ─────────────────────── -->
+  <div class="section">
+    <div class="section-title">21. CO-STAR 프레임워크 : 바이어 설득 제안서</div>
+    <div class="section-desc">Context / Objective / Style / Tone / Audience / Response — 6가지 요소로 AI의 역할·목적·형식·톤·대상·출력을 완전히 제어하는 구조. 설득 문서, 제안서, 공식 서한처럼 독자와 목적이 명확한 문서에 최적.</div>
+
+    <div class="subsection">
+      <div class="subsection-title">CO-STAR 프레임워크 <span class="badge badge-blue">제안서</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'cos-tmpl','cos-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'cos-ex','cos-tmpl')">✨ 예시 (K-뷰티 제안서)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="cos-tmpl">
+          <textarea class="prompt-textarea" rows="13">Context   : [{배경 상황 : 독자가 처한 현재 상황}]
+Objective : [{목적 : 이 문서로 달성할 것}]
+Style     : [{문체 : 문서의 형식적 성격}]
+Tone      : [{톤 : 감성적 태도}]
+Audience  : [{독자 : 직책, 경력, 특성}]
+Response  :
+  - [{출력 형식}]
+  - [{분량}]
+  - [{포함할 필수 섹션}]
+  - [{추가 조건}]</textarea>
+        </div>
+        <div class="inner-panel" id="cos-ex">
+          <div class="prompt-display">Context   : 미국 대형 유통사가 K-beauty 제품 소싱을 고려 중.
+            현재 중국 공급사와 거래 중이나 품질 이슈로 대안을 찾고 있음.
+Objective : 우리 회사를 신규 공급사로 선정하도록 설득하는 제안서 작성
+Style     : 전문적이고 데이터 기반의 비즈니스 문서
+Tone      : 자신감 있으면서도 파트너십을 강조하는 협력적 톤
+Audience  : <span style="color:var(--accent)">미국 유통사의 소싱 디렉터 (40대, 15년 경력)</span>
+Response  :
+  - 영문 Business Proposal 형식
+  - 총 800~1,000단어
+  - <span style="color:var(--accent)">Executive Summary / Company Profile / Product Advantages /
+    Quality, Pricing &amp; Terms / Next Steps 섹션 포함</span>
+  - 품질 비교 데이터 및 인증서 리스트 포함</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">BUSINESS PROPOSAL
+Partnering for Quality: [Company Name] as Your Trusted K-Beauty Supplier
+
+Executive Summary
+  We understand your need for a reliable supplier who consistently delivers...
+  [핵심 강점 2~3줄 + 차별점 수치 제시]
+
+Company Profile
+  Founded in [year], [Company] specializes in...
+  - ISO 22716 certified (GMP for cosmetics)
+  - Annual production capacity: X units
+
+Product Advantages vs. Current Supplier
+  | Criteria    | Current Supplier | Our Company |
+  |-------------|------------------|-------------|
+  | Defect Rate | 3.2%             | 0.4%        |
+  | Lead Time   | 45 days          | 21 days     |
+  | Certs       | None             | FDA, ISO    |
+
+Quality, Pricing &amp; Terms
+  - FOB Price: $XX/unit (MOQ: 5,000 units)
+  - Payment: 30% T/T + 70% on B/L
+
+Next Steps
+  We propose a video call on [date] to discuss...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 22. FOCUS ──────────────────────── -->
+  <div class="section">
+    <div class="section-title">22. FOCUS 프레임워크 : 바이어 발굴 캠페인</div>
+    <div class="section-desc">Function / Objective / Context / Utility / Specification — AI의 역할, 목표, 배경, 활용처, 세부 조건을 순서대로 정의하는 구조. 짧고 임팩트 있는 아웃리치 메시지처럼 조건이 촘촘한 카피 작업에 최적.</div>
+
+    <div class="subsection">
+      <div class="subsection-title">FOCUS 프레임워크 <span class="badge badge-green">아웃리치 메시지</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'foc-tmpl','foc-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'foc-ex','foc-tmpl')">✨ 예시 (LinkedIn 메시지)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="foc-tmpl">
+          <textarea class="prompt-textarea" rows="11">Function      : [{AI 역할 및 수행할 작업}]
+Objective     : [{목적 및 성공 기준}]
+Context       : [{배경 : 회사·제품·타겟 정보}]
+Utility       : [{활용처 : 어디에 쓸 것인가}]
+Specification :
+  - [{길이 조건}]
+  - [{언어 조건}]
+  - [{버전 수 및 버전별 특성}]
+  - [{기타 형식 조건}]</textarea>
+        </div>
+        <div class="inner-panel" id="foc-ex">
+          <div class="prompt-display">Function      : 당신은 글로벌 B2B 마케팅 전문가입니다.
+                신규 바이어 발굴을 위한 LinkedIn 메시지를 작성하세요.
+Objective     : <span style="color:var(--accent)">타겟 바이어의 답장률 30% 이상으로 높이는 것이 목적</span>
+Context       : 우리 회사는 화장품 원료를 제조하며,
+                프랑스·독일 화장품 업체를 타겟으로 합니다.
+                가격 경쟁력과 빠른 납기(21일)가 핵심 강점입니다.
+Utility       : LinkedIn 및 이메일 아웃리치 캠페인에 활용
+Specification :
+  - 메시지 길이 : 150~200자 이내
+  - 영문 작성
+  - <span style="color:var(--accent)">3가지 버전 (공식적 / 친근한 / 문제해결 중심)</span>
+  - 각 버전마다 제목(Subject Line) 포함</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">Version 1 — Formal
+Subject: Partnership Opportunity: Premium Cosmetic Ingredients from Korea
+Hi [Name], I'd like to introduce [Company], a Korean manufacturer of
+cosmetic raw materials. We supply to EU-certified brands with 21-day
+lead times and competitive pricing. Would you be open to a brief call?
+
+Version 2 — Friendly
+Subject: Quick question about your ingredient sourcing
+Hi [Name]! Saw your work at [Company] — impressive lineup.
+We make cosmetic ingredients loved by French &amp; German brands.
+Fast delivery, great prices. Worth a 15-min chat?
+
+Version 3 — Problem-Solving
+Subject: Struggling with long lead times or inconsistent quality?
+Hi [Name], many EU cosmetic brands tell us supplier delays are
+their #1 pain point. We solve that — 21-day delivery, ISO-certified,
+proven in 15+ EU markets. Can I share our specs?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 23. ROSES ──────────────────────── -->
+  <div class="section">
+    <div class="section-title">23. ROSES 프레임워크 : 계약 협상 전략</div>
+    <div class="section-desc">Role / Objective / Scenario / Expected Solution / Steps — 역할·목표·시나리오·기대 결과·단계를 순서대로 정의하는 구조. 가격 협상처럼 상황 변수가 많고 단계적 접근이 필요한 작업에 최적.</div>
+
+    <div class="subsection">
+      <div class="subsection-title">ROSES 프레임워크 <span class="badge badge-yellow">가격 협상</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ros-tmpl','ros-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ros-ex','ros-tmpl')">✨ 예시 (미국 바이어 협상)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ros-tmpl">
+          <textarea class="prompt-textarea" rows="20">Role              : [{AI 역할}]
+Objective         : [{협상 목표 및 목표 수치}]
+Scenario          :
+  - [{현재 제시된 조건}]
+  - [{우리 목표 조건}]
+  - [{시장 기준값}]
+  - [{상대방 규모/물량}]
+  - [{경쟁사 조건}]
+Expected Solution :
+  - [{원하는 전략 구성}]
+  - [{양보 vs 가치 강조 방향}]
+  - [{최종 시나리오 형태}]
+Steps             :
+  1. [{1단계}]
+  2. [{2단계}]
+  3. [{3단계}]
+
+#출력
+[{출력물1}] = [{형식}]
+[{출력물2}] = [{형식}]</textarea>
+        </div>
+        <div class="inner-panel" id="ros-ex">
+          <div class="prompt-display">Role              : 당신은 국제 무역 전문가입니다.
+Objective         : <span style="color:var(--accent)">미국 바이어와의 가격 협상에서 FOB $50/unit 달성</span>
+Scenario          :
+  - 바이어 첫 제시가 : $40/unit
+  - 우리 희망가      : $50/unit
+  - 시장 평균가      : $45/unit
+  - 바이어 연간 예상 물량 : 50,000 units
+  - <span style="color:var(--accent)">경쟁사(중국 업체) 제시가 : $42/unit</span>
+Expected Solution :
+  - 협상 전략 3단계
+  - 각 단계별 제시 가격 및 조건
+  - 최종 합의 시나리오
+Steps             :
+  1. 현재 상황 분석
+  2. 가치 제안 준비 (품질·납기·인증 서류)
+  3. 1차 협상 : 품질 차별화 강조, $55 제시
+  4. 2차 협상 : 물량 증가 시 단계별 할인 ($55 → $53 → $50)
+  5. 계약서 작성 및 후속 조치
+
+#출력
+[협상 스크립트] = 각 단계별 대화 예시 (영문)
+[체크리스트]   = 협상 전 준비 사항</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">[협상 스크립트]
+
+Step 3 — 1차 협상
+Us    : "Based on our ISO certification and 0.4% defect rate, our standard
+         price is $55/unit. This reflects a quality premium over alternatives."
+Buyer : "That's too high. The market is around $42~45."
+Us    : "Our defect rate saves you approximately $3/unit in QC costs alone..."
+
+Step 4 — 2차 협상
+Us    : "If you commit to 50,000 units annually, we can offer a volume-based
+         structure: $53 for Year 1, $50 from Year 2."
+
+[체크리스트]
+□ 경쟁사 견적서 수집 (비교 자료용)
+□ 품질 비교 데이터 시트 준비
+□ 인증서 사본 (ISO, FDA 등)
+□ 단계별 물량 할인표 작성
+□ 최저 수용 가격(BATNA) 내부 합의
+□ 계약서 초안 (Incoterms 2020 기준) 준비</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 24. RISEN ──────────────────────── -->
+  <div class="section">
+    <div class="section-title">24. RISEN 프레임워크 : 무역 분쟁 해결</div>
+    <div class="section-desc">Role / Instructions / Steps / Expectations / Narrowing — 역할·지침·단계·기대결과·범위제한을 순서대로 정의하는 구조. 법적·절차적 정확성이 요구되는 분쟁, 클레임, 계약 검토 작업에 최적.</div>
+
+    <div class="tip-box">
+      <strong>핵심</strong> : Narrowing(범위 제한)이 핵심. 제외할 법령·기준·접근법을 명확히 지정해야 원하지 않는 방향으로 흐르지 않는다.
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">RISEN 프레임워크 <span class="badge badge-purple">분쟁·클레임</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'ris-tmpl','ris-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'ris-ex','ris-tmpl')">✨ 예시 (물품 파손 클레임)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="ris-tmpl">
+          <textarea class="prompt-textarea" rows="14">Role         : [{AI 페르소나 : 전문가 역할}]
+Instructions : [{해결할 문제의 핵심과 목표}]
+Steps        :
+  1. [{분석 단계}]
+  2. [{검토 단계}]
+  3. [{대안 제시 단계}]
+  4. [{결과물 작성 단계}]
+Expectations : [{최종 결과물의 형식, 톤, 완결성 기준}]
+Narrowing    :
+  - [{반드시 준수할 기준}]
+  - [{제외할 접근법 또는 법령}]
+  - [{기타 제약 조건}]</textarea>
+        </div>
+        <div class="inner-panel" id="ris-ex">
+          <div class="prompt-display">Role         : 당신은 국제 무역 전문 변호사이자 상사중재원 전문가입니다.
+Instructions : 해상 운송 중 물품 파손으로 발생한 손해배상 합의를 도출하세요.
+               <span style="color:var(--accent)">목표 : 소송 없이 협의로 배상 80% 이상 회수</span>
+Steps        :
+  1. 파손 경위 및 책임 소재 분석 (B/L, 검사 보고서 기준)
+  2. 적용 가능한 국제 협약 검토 (헤이그-비스비 규칙 등)
+  3. 협상 가능한 합의 옵션 3가지 제시
+  4. 공식 클레임 서한 초안 작성
+Expectations : 공식 서한 형태, 설득력 있는 법적 논리, 영문 및 국문 병기
+Narrowing    :
+  - Incoterms 2020 CIF 기준 적용
+  - <span style="color:var(--accent)">소송·중재 제기는 최후 수단으로만 언급</span>
+  - 상대방 감정을 자극하는 공격적 표현 제외</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 구조</div>
+            <div class="preview-content">[상황 분석]
+B/L 상의 "Shipped in Good Order" 문구 확인됨 → 출항 시 정상 상태 입증 가능.
+도착지 검사 보고서상 파손율 34% → Hague-Visby Rules Art. IV 적용 가능.
+
+[합의 옵션]
+Option A. 전액 현금 배상 (청구액의 100%)
+Option B. 대체 물품 재발송 + 부분 배상 (70%)  ← 권장
+Option C. 향후 거래 크레딧 적립 (배상 회피형, 비권장)
+
+[클레임 서한 초안]
+Dear [Carrier/Insurer],
+We write formally to claim compensation for cargo damage...
+(Incoterms 2020 CIF 기준, Hague-Visby Rules 근거 명시)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 25. BAB ────────────────────────── -->
+  <div class="section">
+    <div class="section-title">25. BAB 프레임워크 : 수출 성공 스토리</div>
+    <div class="section-desc">Before / After / Bridge — 문제 상황 → 이상적 결과 → 해결 경로의 3단계 서사 구조. 고객 사례, 마케팅 카피, 제안서 도입부처럼 감성과 설득이 필요한 글에 최적.</div>
+
+    <div class="tip-box">
+      <strong>핵심 원리</strong> : Before(고통)가 구체적일수록 독자가 공감한다. After(결과)에 수치를 넣으면 신뢰도와 설득력이 동시에 상승한다. Bridge는 Before → After를 인과관계로 연결해야 한다.
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">BAB 프레임워크 <span class="badge badge-blue">스토리텔링</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'bab-tmpl','bab-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'bab-ex','bab-tmpl')">✨ 예시 (수출 성공 스토리)</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="bab-tmpl">
+          <textarea class="prompt-textarea" rows="8">Before (전) : [{해결 전 구체적 문제 상황 : 수치나 감정 포함}]
+
+After  (후) : [{문제 해결 후 도달한 이상적 상태 : 수치 포함}]
+
+Bridge (교량) : [{Before에서 After로 가기 위해 사용한 핵심 전략 또는 솔루션}]</textarea>
+        </div>
+        <div class="inner-panel" id="bab-ex">
+          <div class="prompt-display">Before (전) :
+  해외 시장 개척 전, 우리 기업은 국내 매출 정체로 <span style="color:var(--accent)">3년 연속 성장률 0%대</span>에 머물렀습니다.
+  수출 경험이 전무하고, 브랜드 인지도도 없어 바이어 미팅조차 잡기 어려웠습니다.
+  복잡한 통관 절차와 언어 장벽은 첫 도전을 가로막는 높은 벽이었습니다.
+
+After  (후) :
+  18개월 후, <span style="color:var(--accent)">연 수출액 12억 원을 달성</span>하며 전체 매출의 40%를 해외에서 창출합니다.
+  독일 대형 유통망 2곳에 정식 입점하였고, <span style="color:var(--accent)">재주문율은 85%</span>에 달합니다.
+  바이어로부터 "reliable Korean partner"로 인식되고 있습니다.
+
+Bridge (교량) :
+  ① KOTRA 수출 바우처를 활용해 현지화 마케팅 비용 70% 절감
+  ② 독일어 제품 카탈로그 및 CE 인증 취득으로 바이어 신뢰 확보
+  ③ LinkedIn 아웃리치로 3개월 만에 바이어 미팅 47건 성사
+  ④ 현지 물류 파트너와의 협력으로 납기를 45일 → 18일로 단축</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답 (완성본)</div>
+            <div class="preview-content">3년 연속 제자리걸음이었습니다.
+
+국내 시장의 한계를 느끼면서도 해외는 너무 막막했습니다.
+언어도, 인증도, 바이어도 없었습니다.
+첫 전시회에서 건넨 카탈로그 300장 중 연락이 온 건 단 2건이었습니다.
+
+그리고 18개월 후, 우리는 달라졌습니다.
+
+독일 유통망 2곳 입점. 재주문율 85%. 연 수출 12억 원.
+이제 바이어들이 먼저 연락해옵니다.
+
+어떻게 가능했을까요?
+
+세 가지가 전부였습니다.
+정부 지원(KOTRA 바우처)으로 돈 걱정 없이 시작하고,
+CE 인증으로 신뢰를 만들고,
+LinkedIn으로 직접 바이어를 찾아갔습니다.
+납기를 45일에서 18일로 줄인 것이 마지막 퍼즐이었습니다.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="compare-table">
+      <thead><tr><th>프레임워크</th><th>핵심 특징</th><th>최적 활용처</th></tr></thead>
+      <tbody>
+        <tr><td>CO-STAR</td><td>6요소로 톤·독자·형식 완전 제어</td><td>제안서, 공식 서한</td></tr>
+        <tr><td>FOCUS</td><td>활용처·버전 수 명시 → A/B 소재 즉시 확보</td><td>아웃리치 메시지, 카피</td></tr>
+        <tr><td>ROSES</td><td>시나리오 숫자 구체화 → 현실적 협상 전략</td><td>가격 협상, 계약</td></tr>
+        <tr><td>RISEN</td><td>Narrowing으로 원하지 않는 방향 차단</td><td>분쟁, 클레임, 법률</td></tr>
+        <tr><td>BAB</td><td>감정+수치 서사로 공감과 신뢰 동시 확보</td><td>스토리, 마케팅, IR</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch8.html" class="chapter-nav-btn">← 8장</a>
+  <span class="chapter-page-info">9 / 11</span>
+  <a href="ch10.html" class="chapter-nav-btn">10장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>

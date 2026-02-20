@@ -223,6 +223,39 @@ function initWfBanner() {
   document.body.appendChild(banner);
 }
 
+/* ── 모바일 사이드바 햄버거 버튼 ─────────── */
+(function injectMobileNav() {
+  const btn = document.createElement('button');
+  btn.className = 'menu-toggle';
+  btn.setAttribute('aria-label', '메뉴');
+  btn.innerHTML = '☰';
+
+  const overlay = document.createElement('div');
+  overlay.className = 'sidebar-overlay';
+
+  document.body.prepend(overlay);
+  document.body.prepend(btn);
+
+  const sidebar = document.querySelector('.header');
+  btn.addEventListener('click', () => {
+    const isOpen = sidebar.classList.toggle('sidebar-open');
+    overlay.classList.toggle('active', isOpen);
+    btn.innerHTML = isOpen ? '✕' : '☰';
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('sidebar-open');
+    overlay.classList.remove('active');
+    btn.innerHTML = '☰';
+  });
+  sidebar.querySelectorAll('.tab-btn').forEach(a => {
+    a.addEventListener('click', () => {
+      sidebar.classList.remove('sidebar-open');
+      overlay.classList.remove('active');
+      btn.innerHTML = '☰';
+    });
+  });
+})();
+
 /* ── 페이지 로드 시 초기화 ─────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   initSplitPanes();
