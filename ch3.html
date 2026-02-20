@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3장 마크다운 활용법 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn active" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">3장</div>
+    <div class="chapter-title">마크다운을 이용한 프롬프트 작성법</div>
+    <div class="chapter-desc">AI는 텍스트를 구조적으로 파싱(문맥상 워드를 쪼개서 저장)한다. 마크다운을 이용하면 역할·조건·출력형태가 명확히 구분되어 더 정확하고 일관된 응답을 이끌어낼 수 있다.</div>
+  </div>
+
+  <!-- ── 마크다운 핵심 요소 6가지 ─────── -->
+  <div class="section">
+    <div class="section-title">마크다운 핵심 요소 6가지</div>
+
+    <div class="element-card">
+      <div class="element-card-header">
+        <div class="element-name"># 헤더</div>
+        <div class="element-role">→ 프롬프트의 뼈대 / 섹션 경계 구분</div>
+      </div>
+      <div class="section-desc" style="margin-bottom:10px;"># 제목 / ## 부제목 / ### 소제목 — AI가 각 섹션의 역할을 즉시 파악</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>예시</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="5"># 역할
+당신은 10년 경력의 관세사입니다.
+# 작업
+HS CODE를 분류하세요.
+# 출력형식
+json으로 반환</textarea>
+      </div>
+    </div>
+
+    <div class="element-card">
+      <div class="element-card-header">
+        <div class="element-name">``` 코드블럭</div>
+        <div class="element-role">→ 입력 데이터 격리</div>
+      </div>
+      <div class="section-desc" style="margin-bottom:10px;">지시문과 데이터를 분리 — AI가 코드블럭 안의 내용을 "처리할 데이터"로 인식</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>예시</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="7">아래 python 코드의 버그를 찾아줘
+
+"""
+def calculate_tax(price):
+  return price * 0.1
+  print("완료")  # 버그 위치
+"""</textarea>
+      </div>
+      <div class="preview-box">
+        <div class="preview-label">AI 예상 응답</div>
+        <div class="preview-content">버그 위치: 4번째 줄 print("완료")
+원인: return 문 이후의 코드는 실행되지 않습니다 (unreachable code).
+수정: print("완료")를 return price * 0.1 앞으로 이동하세요.</div>
+      </div>
+    </div>
+
+    <div class="element-card">
+      <div class="element-card-header">
+        <div class="element-name">&gt; 인용문</div>
+        <div class="element-role">→ 절대 조건 강조</div>
+      </div>
+      <div class="section-desc" style="margin-bottom:10px;">절대 지켜야 할 조건에 사용 — AI가 일반 지시보다 높은 우선순위로 처리</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>예시</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="2">> 반드시 한국어로만 답변할 것
+> 추측성 내용은 포함하지 말 것</textarea>
+      </div>
+    </div>
+
+    <div class="element-card">
+      <div class="element-card-header">
+        <div class="element-name">- 목록</div>
+        <div class="element-role">→ 조건과 제약 나열</div>
+      </div>
+      <div class="section-desc" style="margin-bottom:10px;">여러 조건을 항목별로 분리 — AI가 조건을 누락 없이 처리</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>예시</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="5">## 제약조건
+- 답변은 500자 이내
+- 전문 용어 사용 시 괄호 안에 설명 추가
+- 불확실한 내용은 "확인 필요"로 표시
+- 예시는 반드시 무역 도메인에서 선택</textarea>
+      </div>
+    </div>
+
+    <div class="element-card">
+      <div class="element-card-header">
+        <div class="element-name">| 표</div>
+        <div class="element-role">→ 입출력 예시 구조화</div>
+      </div>
+      <div class="section-desc" style="margin-bottom:10px;">입력-출력 관계를 표 형태로 제시 — AI가 패턴을 학습하여 동일 형식으로 응답</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>예시</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="5">## 예시
+| 입력 품목  | HS CODE | 관세율 |
+|-----------|---------|--------|
+| 면 티셔츠  | 6109.10 |  13%  |
+| 블라우스   | 6206.40 |  13%  |</textarea>
+      </div>
+    </div>
+
+    <div class="element-card">
+      <div class="element-card-header">
+        <div class="element-name">**굵게** / *기울임*</div>
+        <div class="element-role">→ 변수와 핵심 단어 강조</div>
+      </div>
+      <div class="section-desc" style="margin-bottom:10px;">AI가 특별히 주의해야 할 변수명이나 필수 조건을 강조</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>예시</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="2">**[분석대상]** 에 대해 *반드시* 아래 순서대로 분석하세요</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 종합 예시 ──────────────────────── -->
+  <div class="section">
+    <div class="section-title">종합 예시 — 6요소 통합 프롬프트</div>
+    <div class="tip-box">
+      <strong>프롬프트 작성 순서</strong>: 역할 → 작업 → 입력 → 제약 → 출력 — 이 순서를 지키면 AI가 누락·혼동 없이 정확하게 응답한다.
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="inner-tabs">
+          <button class="inner-tab active" onclick="innerTab(this,'syn-tmpl','syn-ex')">📋 템플릿</button>
+          <button class="inner-tab" onclick="innerTab(this,'syn-ex','syn-tmpl')">✨ 예시</button>
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+      </div>
+      <div class="inner-panel active" id="syn-tmpl">
+        <textarea class="prompt-textarea" rows="22"># 역할
+당신은 [전문 분야와 경력]입니다.
+[세부 전문 영역]에 특화되어 있습니다.
+
+# 작업
+아래 [분석 대상]에 대해 [수행할 작업]을 하세요.
+
+"""
+[입력 항목 1] : [값]
+[입력 항목 2] : [값]
+[입력 항목 3] : [값]
+"""
+
+# 분석 기준
+- [기준 1]
+- [기준 2]
+- [기준 3]
+
+# 제약 조건
+> 불확실한 내용은 반드시 "🚨확인 필요🚨"로 표기
+
+# 출력 형식
+"""
+[원하는 출력 형식 (예: json, 표, 목록 등)]
+{
+  "[항목 1]" : " ",
+  "[항목 2]" : " ",
+  "[항목 3]" : [ ]
+}
+"""</textarea>
+      </div>
+      <div class="inner-panel" id="syn-ex">
+        <textarea class="prompt-textarea" rows="22"># 역할
+당신은 8년 경력의 콘텐츠 마케터입니다.
+SEO 최적화 블로그 글쓰기와 바이럴 콘텐츠 전략에 특화되어 있습니다.
+
+# 작업
+아래 콘텐츠 정보를 바탕으로 블로그 포스트 초안을 작성하세요.
+
+"""
+주제   : 재택근무 생산성을 높이는 실전 루틴
+타겟   : 직장인 20-30대
+플랫폼 : 네이버 블로그
+"""
+
+# 분석 기준
+- 검색 상위 노출을 위한 SEO 키워드 자연스럽게 포함
+- 공감을 유발하는 도입부로 시작
+- 실행 가능한 팁 위주로 구성
+
+# 제약 조건
+> 출처 없는 통계 수치는 반드시 "🚨확인 필요🚨"로 표기
+
+# 출력 형식
+"""
+마크다운 형식
+{
+  "제목"     : " ",
+  "소제목"   : [ ],
+  "본문분량" : "1,500자 내외"
+}
+"""</textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch2.html" class="chapter-nav-btn">← 2장</a>
+  <span class="chapter-page-info">3 / 6</span>
+  <a href="ch4.html" class="chapter-nav-btn">4장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>

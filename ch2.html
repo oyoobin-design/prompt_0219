@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2장 페르소나 패턴 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn active" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">2장</div>
+    <div class="chapter-title">페르소나 패턴</div>
+    <div class="chapter-desc">AI에게 특정 역할을 부여하면 같은 질문에도 전문성·어조·분석 관점이 완전히 달라진다. AI는 페르소나에 맞는 지식 체계와 언어 습관을 활성화하여 응답한다.</div>
+  </div>
+
+  <!-- ── 페르소나 효과 ──────────────────── -->
+  <div class="section">
+    <div class="section-title">페르소나 효과</div>
+    <div class="section-desc">테스트 질문: "이 계약서 검토해줘" — 페르소나에 따라 응답 방향이 완전히 달라진다</div>
+    <table class="compare-table">
+      <thead><tr><th>페르소나</th><th>응답 방향</th></tr></thead>
+      <tbody>
+        <tr><td>없음</td><td>일반적인 설명 (특정 관점 없음)</td></tr>
+        <tr><td>변호사</td><td>법적 리스크 중심 분석 (조항별 법적 효력 검토)</td></tr>
+        <tr><td>CFO</td><td>재무조건·수익성 관련 분석 (비용·수익 구조 검토)</td></tr>
+        <tr><td>신입사원</td><td>쉽고 친절한 설명 (전문용어 최소화, 핵심만 요약)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── 4가지 구성 요소 ────────────────── -->
+  <div class="section">
+    <div class="section-title">좋은 페르소나의 4가지 구성 요소</div>
+    <div class="section-desc">아래 4가지를 모두 포함할수록 AI의 역할 수행 정확도가 높아진다</div>
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="inner-tabs">
+          <button class="inner-tab active" onclick="innerTab(this,'bt-tmpl','bt-ex')">📋 템플릿</button>
+          <button class="inner-tab" onclick="innerTab(this,'bt-ex','bt-tmpl')">✨ 예시</button>
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+      </div>
+      <div class="inner-panel active" id="bt-tmpl">
+        <textarea class="prompt-textarea" rows="6">당신은 [{역할}]입니다.                    ← 정체성 설정
+[{경력/배경}]을 가지고 있으며,             ← 전문성 수준
+[{전문 분야}]에 특화되어 있습니다.          ← 응답 범위
+[{말투/태도}]로 응답하세요.                 ← 커뮤니케이션 스타일
+
+{여기에 질문 입력}</textarea>
+      </div>
+      <div class="inner-panel" id="bt-ex">
+        <textarea class="prompt-textarea" rows="6">당신은 [10년 경력의 UX 디자이너]입니다.
+[스타트업과 대기업을 두루 거친 실무 경험]을 가지고 있으며,
+[모바일 앱 온보딩 플로우와 사용성 개선]에 특화되어 있습니다.
+[초보 기획자도 이해할 수 있도록 예시 중심으로] 응답하세요.
+
+앱 첫 로그인 화면의 온보딩 플로우를 어떻게 설계하면 좋을까요?</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 페르소나 예시 3가지 ───────────── -->
+  <div class="section">
+    <div class="section-title">페르소나 예시 3가지</div>
+
+    <div class="subsection">
+      <div class="subsection-title">관세사 페르소나 <span class="badge badge-blue">무역 실무</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="prompt-card-label"><span class="dot"></span>바로 쓰기</div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <textarea class="prompt-textarea" rows="6">당신은 [전문가 역할]입니다.
+[경력 및 배경]을 가지고 있으며,
+[전문 분야 및 특기]에 특화되어 있습니다.
+[답변 대상에 맞는 말투와 태도]로 응답하세요.
+
+[여기에 질문 입력]</textarea>
+      </div>
+      <div class="preview-box">
+        <div class="preview-label">AI 예상 응답 스타일</div>
+        <div class="preview-content">쉽게 설명드릴게요. FTA 협정세율을 적용받으려면 먼저 원산지 증명서(C/O)가 있어야 해요. 한국산 제품이라면 대한상공회의소에서 발급받을 수 있고, 신청은 수출 전에 해두셔야 합니다...</div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">코드 리뷰어 페르소나 <span class="badge badge-yellow">개발·보안</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'cr-tmpl','cr-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'cr-ex','cr-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="cr-tmpl">
+          <textarea class="prompt-textarea" rows="6">당신은 [분야의 전문가 역할]입니다.
+[경력 및 배경]을 가지고 있으며,
+[검토 시 중점적으로 볼 항목들]에 특화되어 있습니다.
+[피드백 스타일]로 응답하세요.
+
+[검토받을 내용 입력]</textarea>
+        </div>
+        <div class="inner-panel" id="cr-ex">
+          <textarea class="prompt-textarea" rows="6">당신은 [시니어 백엔드 개발자]입니다.
+[15년 경력, 핀테크 및 대규모 트래픽 시스템 개발 경험]을 가지고 있으며,
+[API 보안, 성능 최적화, 코드 가독성]에 특화되어 있습니다.
+[칭찬보다 개선점을 먼저 지적하고 이유를 함께 설명하는 스타일]로 응답하세요.
+
+[아래에 검토받을 코드 또는 설계 내용을 붙여넣으세요]</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">창업 컨설턴트 페르소나 <span class="badge badge-green">마케팅</span></div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'cc-tmpl','cc-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'cc-ex','cc-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="cc-tmpl">
+          <textarea class="prompt-textarea" rows="6">당신은 [전문가 역할]입니다.
+[경력 및 경험 배경]을 가지고 있으며,
+[핵심 전문 분야]에 특화되어 있습니다.
+[응답 방식 및 태도]로 응답하세요.
+
+[여기에 질문 입력]</textarea>
+        </div>
+        <div class="inner-panel" id="cc-ex">
+          <textarea class="prompt-textarea" rows="6">당신은 [세 번 창업하고 한 번 엑시트한 시리얼 창업가]입니다.
+[15년 스타트업 생태계 경험]을 가지고 있으며,
+[초기 PMF 검증 전략과 린 마케팅]에 특화되어 있습니다.
+[칭찬보다 현실적인 리스크를 먼저 짚어주는 스타일]로 응답하세요.
+
+구독형 독서 노트 앱을 준비 중인데, 수익 모델을 검토해줄 수 있나요?</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 멀티 페르소나 ─────────────────── -->
+  <div class="section">
+    <div class="section-title">멀티 페르소나</div>
+    <div class="section-desc">여러 전문가 관점을 동시에 활용 — 단일 관점의 편향을 방지하고 다각적 분석을 한 번에 확보</div>
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="inner-tabs">
+          <button class="inner-tab active" onclick="innerTab(this,'mp-tmpl','mp-ex')">📋 템플릿</button>
+          <button class="inner-tab" onclick="innerTab(this,'mp-ex','mp-tmpl')">✨ 예시</button>
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+      </div>
+      <div class="inner-panel active" id="mp-tmpl">
+        <textarea class="prompt-textarea" rows="7">다음 3명의 전문가 입장에서 {분석 주제}를 분석해줘.
+
+- {이름1} ({경력}, {성향}, {관점 키워드})
+- {이름2} ({경력}, {성향}, {관점 키워드})
+- {이름3} ({경력}, {성향}, {관점 키워드})
+
+각자의 관점에서 찬반 의견을 제시해줘.</textarea>
+      </div>
+      <div class="inner-panel" id="mp-ex">
+        <div class="prompt-display">다음 3명의 전문가 입장에서 <span style="color:var(--accent)">우리 제품의 동남아 수출 전략</span>을 분석해줘.
+
+- 김부장 (영업 15년, 낙관적, 현장 중심)
+- 이박사 (시장조사 전문, 데이터 중심, 신중함)
+- 박대표 (스타트업 창업가, 속도 중시, 리스크 감수)
+
+각자의 관점에서 찬반 의견을 제시해줘.</div>
+        <div class="preview-box">
+          <div class="preview-label">AI 예상 응답 구조</div>
+          <div class="preview-content">[김부장 관점] 현장에서 보면 동남아 바이어들은 가격보다 관계를 중요시합니다. 찬성합니다...
+[이박사 관점] 데이터를 보면 베트남 시장 성장률은 연 8.2%이나, 경쟁사 진입도 34% 증가했습니다...
+[박대표 관점] 지금 바로 소규모 파일럿 테스트부터 시작해야 합니다. 분석보다 실행이 먼저...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch1.html" class="chapter-nav-btn">← 1장</a>
+  <span class="chapter-page-info">2 / 6</span>
+  <a href="ch3.html" class="chapter-nav-btn">3장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4장 표현 강도 &amp; 톤 지정 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn active" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">4장</div>
+    <div class="chapter-title">표현 강도 &amp; 톤 지정</div>
+    <div class="chapter-desc">동일한 의미의 지시라도 단어 강도에 따라 AI의 처리 깊이가 달라진다. 톤(말투)을 지정하면 같은 내용도 완전히 다른 문체로 생성된다.</div>
+  </div>
+
+  <!-- ── 표현 강도 스펙트럼 ────────────── -->
+  <div class="section">
+    <div class="section-title">표현 강도 스펙트럼</div>
+    <div class="section-desc">화살표 방향으로 갈수록 AI가 더 엄격하고 깊이 있게 처리</div>
+    <div class="spectrum-container">
+      <div class="spectrum-bar"><span class="spectrum-weak">보안에 신경써주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">취약점을 반드시 점검하고 발견 시 즉시 수정방안을 제시하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">참고하세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">검토하세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">철저히 분석하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">말해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">설명해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">단계별로 서술하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">확인해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">검증하세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">오류 없이 빠짐없이 검토하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">생각해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">고려하세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">반드시 우선순위에 포함하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">써주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">작성하세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">항목별로 빠짐없이 기술하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">요약해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">핵심만 정리하세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">3줄 이내로 압축하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">도움이 되면 좋겠어요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">포함해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">반드시 첨부하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">좋을 것 같아요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">권장합니다</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">예외 없이 적용하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">번역해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">정확하게 번역하세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">원문의 뉘앙스까지 그대로 유지하며 번역하세요</span></div>
+      <div class="spectrum-bar"><span class="spectrum-weak">고쳐주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-weak">수정해주세요</span><span class="spectrum-arrow">→</span><span class="spectrum-strong">원인을 파악하고 근본적으로 개선하세요</span></div>
+    </div>
+  </div>
+
+  <!-- ── 강도 단계별 표현 ──────────────── -->
+  <div class="section">
+    <div class="section-title">강도 단계별 표현</div>
+    <div class="level-table">
+      <div class="level-row" style="background:var(--surface2);font-size:11px;font-weight:700;letter-spacing:1px;color:var(--text-muted);text-transform:uppercase;">
+        <div class="level-cell">단계</div><div class="level-cell">표현</div><div class="level-cell">의미</div>
+      </div>
+      <div class="level-row"><div class="level-cell level-1">1단계 권장</div><div class="level-cell">가능하면, 되도록, ~하는 편이 좋습니다</div><div class="level-cell" style="color:var(--text-muted)">준수하면 좋지만 필수는 아님</div></div>
+      <div class="level-row"><div class="level-cell level-2">2단계 일반</div><div class="level-cell">~하세요, ~해주세요</div><div class="level-cell" style="color:var(--text-muted)">기본 지시 수준</div></div>
+      <div class="level-row"><div class="level-cell level-3">3단계 강조</div><div class="level-cell">반드시, 꼭, 항상</div><div class="level-cell" style="color:var(--text-muted)">높은 우선순위로 처리</div></div>
+      <div class="level-row"><div class="level-cell level-4">4단계 절대</div><div class="level-cell">절대로, 어떤 경우에도, 예외 없이</div><div class="level-cell" style="color:var(--text-muted)">조건 위반 절대 불가</div></div>
+    </div>
+    <div class="prompt-card">
+      <div class="prompt-card-header"><div class="prompt-card-label"><span class="dot"></span>단계별 비교 예시</div><button class="copy-btn" onclick="copyPrompt(this)">복사</button></div>
+      <textarea class="prompt-textarea" rows="3">가능하면 한국어로 답변할 것          ← 1단계 (권장)
+반드시 한국어로 답변할 것            ← 3단계 (강조)
+어떤 경우에도 한국어 이외의 언어를 사용하지 말 것  ← 4단계 (절대)</textarea>
+    </div>
+  </div>
+
+  <!-- ── 우선순위 설정 ─────────────────── -->
+  <div class="section">
+    <div class="section-title">우선순위 설정</div>
+    <div class="tip-box"><strong>💡 팁</strong> — 네거티브 프롬프팅("~하지 말 것" 형식)을 사용하면 AI가 금지 조건을 더 정확하게 인식한다.</div>
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="inner-tabs">
+          <button class="inner-tab active" onclick="innerTab(this,'pr-tmpl','pr-ex')">📋 템플릿</button>
+          <button class="inner-tab" onclick="innerTab(this,'pr-ex','pr-tmpl')">✨ 예시</button>
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+      </div>
+      <div class="inner-panel active" id="pr-tmpl">
+        <textarea class="prompt-textarea" rows="10">🔴 최우선 (절대조건)
+- [절대 지켜야 할 조건]
+
+🟡 중요 (일반조건)
+- [일반적으로 지켜야 할 조건 1]
+- [일반적으로 지켜야 할 조건 2]
+
+🟢 선택 (권장조건)
+- [가능하면 지킬 조건]</textarea>
+      </div>
+      <div class="inner-panel" id="pr-ex">
+        <textarea class="prompt-textarea" rows="10">🔴 최우선 (절대조건)
+- 개인정보 절대 출력하지 말 것
+
+🟡 중요 (일반조건)
+- 사실과 다른 내용을 생성하지 말 것
+- 답변은 500자 이내로 작성
+- 전문용어는 괄호에 설명 추가
+
+🟢 선택 (권장조건)
+- 가능하면 실제 사례 포함
+- 표나 목록을 활용하면 더 좋다</textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 톤(말투) 지정 ─────────────────── -->
+  <div class="section">
+    <div class="section-title">톤(말투) 지정</div>
+    <div class="section-desc">동일한 내용도 지정된 톤에 따라 어휘 선택·문장 구조·감정 표현이 완전히 달라진다</div>
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="inner-tabs">
+          <button class="inner-tab active" onclick="innerTab(this,'ton-tmpl','ton-ex')">📋 템플릿</button>
+          <button class="inner-tab" onclick="innerTab(this,'ton-ex','ton-tmpl')">✨ 예시</button>
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+      </div>
+      <div class="inner-panel active" id="ton-tmpl">
+        <textarea class="prompt-textarea" rows="10"># 입력
+[원본] = {변환할 원본 텍스트}
+
+# 처리
+다음 각각의 톤에 맞춰 [원본] 글을 수정해주세요.
+1. 유머러스한   ← 가볍고 위트 있는 표현
+2. 감정적인     ← 설렘·긴장·희망 등 감정 단어 사용
+3. 따뜻한       ← 공감과 격려, 온화한 어조
+4. 아이러니한   ← 표면과 반대되는 역설적 표현
+5. 로맨틱한     ← 서정적이고 감성적인 언어
+6. 비즈니스적인 ← 간결하고 객관적, 수치와 행동 중심</textarea>
+      </div>
+      <div class="inner-panel" id="ton-ex">
+        <div class="prompt-display"># 입력
+[원본] = 올해 들어 회사는 큰 변화를 맞이했습니다.
+         이제 새로운 전략과 목표를 설정하고, 모든 직원이 함께 나아가려고 합니다.
+
+# 처리
+위 [원본]을 아래 6가지 톤으로 각각 수정해주세요.
+1. 유머러스한 / 2. 감정적인 / 3. 따뜻한
+4. 아이러니한 / 5. 로맨틱한 / 6. 비즈니스적인</div>
+        <div class="preview-box">
+          <div class="preview-label">AI 예상 응답 일부</div>
+          <div class="preview-content">1. 유머러스: 올해 회사가 "변했다"는 걸 감지하셨나요? 맞아요, 드디어 변화가 왔습니다 (도망갈 곳은 없어요)...
+2. 감정적: 격동의 한 해였습니다. 두근거리는 마음으로, 우리는 새 길을 향해 함께 걸어가려 합니다...
+6. 비즈니스: 당사는 2024년 전략 방향을 재설정했습니다. 전 직원은 신규 목표 달성에 동참하십시오.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch3.html" class="chapter-nav-btn">← 3장</a>
+  <span class="chapter-page-info">4 / 6</span>
+  <a href="ch5.html" class="chapter-nav-btn">5장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>

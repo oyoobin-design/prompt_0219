@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5장 대안 접근법 &amp; 이용자 페르소나 | 프롬프트 엔지니어링</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>프롬프트 엔지니어링</h1>
+    <span class="header-badge">핵심 정리</span>
+  </div>
+  <nav class="tabs">
+    <a class="tab-btn" href="index.html">목차</a>
+    <a class="tab-btn" href="ch1.html"><span class="tab-num">1장</span>유형 &amp; 샷 기법</a>
+    <a class="tab-btn" href="ch2.html"><span class="tab-num">2장</span>페르소나 패턴</a>
+    <a class="tab-btn" href="ch3.html"><span class="tab-num">3장</span>마크다운 활용</a>
+    <a class="tab-btn" href="ch4.html"><span class="tab-num">4장</span>표현 강도 &amp; 톤</a>
+    <a class="tab-btn active" href="ch5.html"><span class="tab-num">5장</span>대안 &amp; 이용자</a>
+    <a class="tab-btn" href="ch6.html"><span class="tab-num">6장</span>레시피 &amp; 고급</a>
+  </nav>
+</div>
+
+<div class="content">
+  <div class="chapter-header">
+    <div class="chapter-tag">5장</div>
+    <div class="chapter-title">대안 접근법 &amp; 이용자 페르소나</div>
+    <div class="chapter-desc">모든 선택지를 나열하고 비교하여 결정권을 사람에게 돌려주는 대안 패턴과, 답변을 듣는 사람의 프로필을 명시하여 맞춤형 답변을 유도하는 이용자 페르소나 패턴.</div>
+  </div>
+
+  <!-- ── 대안 접근법 패턴 ──────────────── -->
+  <div class="section">
+    <div class="section-title">대안 접근법 패턴</div>
+    <table class="compare-table" style="margin-bottom:20px;">
+      <thead><tr><th>방식</th><th>질문</th><th>결과</th></tr></thead>
+      <tbody>
+        <tr><td>일반 프롬프트</td><td>"어떻게 하면 좋을까?"</td><td>AI가 임의로 하나 선택</td></tr>
+        <tr><td>대안 패턴</td><td>"모든 방법을 나열하고 장단점 비교해줘"</td><td>선택권이 사람에게 돌아옴</td></tr>
+      </tbody>
+    </table>
+
+    <div class="subsection">
+      <div class="subsection-title">유형 1: 단순 나열형</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'alt1-tmpl','alt1-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'alt1-ex','alt1-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="alt1-tmpl">
+          <textarea class="prompt-textarea" rows="10">아래 문제를 해결하는 방법을 최소 {N}가지 제시하세요.
+각 방법은 반드시 아래 형식을 그대로 사용하세요.
+
+## 방법 {번호} : {이름}
+- 핵심 원리   : {한 줄로 작동 방식 설명}
+- 적합한 상황 : {언제 이 방법이 가장 효과적인가}
+- 단점        : {주의해야 할 제약이나 위험 요소}
+- 난이도      : {초급 / 중급 / 고급}
+
+# 문제
+{해결하고 싶은 문제 입력}</textarea>
+        </div>
+        <div class="inner-panel" id="alt1-ex">
+          <div class="prompt-display">아래 문제를 해결하는 방법을 최소 <span style="color:var(--accent)">4</span>가지 제시하세요.
+
+## 방법 {번호} : {이름}
+- 핵심 원리   : {한 줄로 작동 방식 설명}
+- 적합한 상황 : {언제 이 방법이 가장 효과적인가}
+- 단점        : {주의해야 할 제약이나 위험 요소}
+- 난이도      : {초급 / 중급 / 고급}
+
+# 문제
+<span style="color:var(--accent)">수출통관 서류를 자동으로 생성하고 싶습니다.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">유형 2: 축 기반 비교형</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'alt2-tmpl','alt2-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'alt2-ex','alt2-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="alt2-tmpl">
+          <textarea class="prompt-textarea" rows="10">아래 {N}가지 방법을 다음 평가 기준으로 비교 분석하세요.
+결과는 표 형태로 출력하고 최적 선택지에 ★ 표시를 추가하세요.
+
+평가 기준:
+- 개발 속도       (빠름 / 보통 / 느림)
+- 유지보수 난이도 (쉬움 / 보통 / 어려움)
+- 비용            (무료 / 저비용 / 고비용)
+- 확장성          (높음 / 보통 / 낮음)
+
+비교 대상: {대상1}, {대상2}, {대상3}
+용도: {사용 목적}</textarea>
+        </div>
+        <div class="inner-panel" id="alt2-ex">
+          <div class="prompt-display">아래 4가지 방법을 다음 평가 기준으로 비교 분석하세요.
+결과는 표 형태로 출력하고 최적 선택지에 ★ 표시를 추가하세요.
+
+평가 기준: 개발 속도 / 유지보수 난이도 / 비용 / 확장성
+
+비교 대상: <span style="color:var(--accent)">FastAPI, Flask, Node.js Express, Django</span>
+용도: <span style="color:var(--accent)">무역 데이터 처리 REST API 서버</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">유형 3: 상황별 분기형</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'alt3-tmpl','alt3-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'alt3-ex','alt3-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="alt3-tmpl">
+          <textarea class="prompt-textarea" rows="12">아래 각 상황에 맞는 가장 적합한 [추천 대상]을 추천하세요.
+각 상황은 서로 독립적으로 판단하세요.
+
+상황 A : [상황 A 설명]
+상황 B : [상황 B 설명]
+상황 C : [상황 C 설명]
+상황 D : [상황 D 설명]
+
+각 상황에 대해:
+1순위 추천 : [추천 항목] - [이유 한 줄]
+2순위 추천 : [추천 항목] - [이유 한 줄]</textarea>
+        </div>
+        <div class="inner-panel" id="alt3-ex">
+          <div class="prompt-display">아래 각 상황에 맞는 가장 적합한 온라인 마케팅 채널을 추천하세요.
+각 상황은 서로 독립적으로 판단하세요.
+
+상황 A : 뷰티 스타트업, 월 광고비 30만원, 20대 여성 타겟, 빠른 인지도 필요
+상황 B : B2B SaaS 서비스, 중소기업 의사결정자 대상, 리드 발굴 목적
+상황 C : 지역 음식점, 반경 3km 고객 유입, 즉각적인 예약 증가 필요
+상황 D : 해외 진출 초기 단계, 영어권 시장, 브랜드 인지도 구축</div>
+          <div class="preview-box">
+            <div class="preview-label">AI 예상 응답</div>
+            <div class="preview-content">상황 A
+1순위 추천 : 인스타그램 릴스 - 20대 여성 타겟과 정확히 일치, 소액으로도 바이럴 가능
+2순위 추천 : 틱톡 광고 - 뷰티 카테고리 알고리즘 친화적, 팔로워 없이도 노출 가능
+
+상황 B
+1순위 추천 : 링크드인 광고 - 직책·업종 기반 정밀 타겟팅, 의사결정자 직접 도달 가능
+2순위 추천 : 구글 검색광고 - 솔루션 검색 의도를 가진 유저 포착, 전환율 높음
+
+상황 C
+1순위 추천 : 네이버 플레이스 광고 - 위치 기반 검색 유입, 예약 시스템 직접 연동 가능
+2순위 추천 : 인스타그램 위치 광고 - 반경 내 노출로 방문 의도 높은 유저 타겟
+
+상황 D
+1순위 추천 : 구글 디스플레이 광고 - 영어권 글로벌 도달, 브랜딩 캠페인에 최적
+2순위 추천 : 링크드인 콘텐츠 마케팅 - B2B 글로벌 신뢰도 구축, 의사결정자 대상 유효</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title">유형 4: 역발상 대안형</div>
+      <div class="prompt-card">
+        <div class="prompt-card-header">
+          <div class="inner-tabs">
+            <button class="inner-tab active" onclick="innerTab(this,'alt4-tmpl','alt4-ex')">📋 템플릿</button>
+            <button class="inner-tab" onclick="innerTab(this,'alt4-ex','alt4-tmpl')">✨ 예시</button>
+          </div>
+          <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+        </div>
+        <div class="inner-panel active" id="alt4-tmpl">
+          <textarea class="prompt-textarea" rows="10">아래 문제에 대해 다음 3가지 유형의 대안을 포함하여 총 5가지를 제시하세요.
+
+유형 1: 일반적인 해결책      ← 현재 업계에서 통용되는 방법
+유형 2: "하지 않는" 선택지  ← 이 문제를 우회하거나 포기하는 전략
+유형 3: 문제 자체를 재정의  ← 문제의 전제를 바꾸어 다른 각도에서 접근
+※ 전문가들이 절대 권장하지 않는 대안도 이유와 함께 포함할 것
+
+문제: {해결하고 싶은 문제 입력}</textarea>
+        </div>
+        <div class="inner-panel" id="alt4-ex">
+          <textarea class="prompt-textarea" rows="10">아래 문제에 대해 다음 3가지 유형의 대안을 포함하여 총 5가지를 제시하세요.
+
+유형 1: 일반적인 해결책      ← 현재 업계에서 통용되는 방법
+유형 2: "하지 않는" 선택지  ← 이 문제를 우회하거나 포기하는 전략
+유형 3: 문제 자체를 재정의  ← 문제의 전제를 바꾸어 다른 각도에서 접근
+※ 전문가들이 절대 권장하지 않는 대안도 이유와 함께 포함할 것
+
+문제: 팀원 5명 중 3명이 매주 회의에 10~15분씩 늦어 전체 프로젝트 일정이 지연되고 있습니다.</textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── 이용자 페르소나 패턴 ──────────── -->
+  <div class="section">
+    <div class="section-title">이용자 페르소나 패턴</div>
+    <div class="section-desc">페르소나 패턴이 "AI의 역할"을 정의한다면, 이용자 페르소나는 "이 답변을 듣는 사람이 누구인가"를 정의한다. AI가 청중의 배경·수준·니즈에 맞게 어휘·깊이·예시를 자동으로 조정한다.</div>
+
+    <table class="compare-table" style="margin-bottom:20px;">
+      <thead><tr><th>이용자</th><th>같은 질문에 대한 응답 스타일</th></tr></thead>
+      <tbody>
+        <tr><td>무역 초보 대학생</td><td>쉬운 비유, 기초 개념부터, 전문용어 최소화</td></tr>
+        <tr><td>수출 담당 팀장</td><td>실무 사례, 비용·리스크 중심, 즉시 활용 가능한 정보</td></tr>
+        <tr><td>금융기관 IT 결정자</td><td>기술 아키텍처, 도입 비용·기간, 보안·확장성 중심</td></tr>
+      </tbody>
+    </table>
+
+    <div class="prompt-card">
+      <div class="prompt-card-header">
+        <div class="inner-tabs">
+          <button class="inner-tab active" onclick="innerTab(this,'up-tmpl','up-ex')">📋 템플릿</button>
+          <button class="inner-tab" onclick="innerTab(this,'up-ex','up-tmpl')">✨ 예시</button>
+        </div>
+        <button class="copy-btn" onclick="copyPrompt(this)">복사</button>
+      </div>
+      <div class="inner-panel active" id="up-tmpl">
+        <textarea class="prompt-textarea" rows="12"># 이용자 정보
+- 직책/역할   : {직책 및 회사 정보}
+- 사전 지식   : {이 주제에 대한 배경 지식 수준}
+- 실행 목적   : {이 정보로 무엇을 결정/실행할 예정인가}
+- 현재 상태   : {급함 / 여유 / 상황 설명}
+- 읽기 여유   : {짧게 / 보통 / 길어도 됨}
+- 두려움/원함 : {가장 피하고 싶은 것 / 가장 원하는 결과}
+- 금지 표현   : {쓰면 안 되는 언어나 표현}
+
+# 지시
+위의 이용자에게 {요청 내용}을 설명해줘.
+{추가 제약 조건}</textarea>
+      </div>
+      <div class="inner-panel" id="up-ex">
+        <textarea class="prompt-textarea" rows="12"># 이용자 정보
+- 직책/역할   : 중소기업 대표 (제조업, 직원 30명)
+- 사전 지식   : 국내 영업만 10년, 해외 수출 처음
+- 실행 목적   : 첫 수출 계약 체결 여부 결정
+- 현재 상태   : 급함 (바이어 미팅 3일 후)
+- 읽기 여유   : 없음 (핵심만 원함)
+- 두려움/원함 : 실수로 손해 볼까 두려움 / 빠르게 실행 원함
+- 금지 표현   : 법률 용어, 영어 약어
+
+# 지시
+위의 이용자에게 첫 수출 준비 3단계를 설명해줘.
+전문용어는 최소화하고, 각 단계는 3줄 이내로 작성하세요.</textarea>
+      </div>
+    </div>
+
+    <div class="tip-box">
+      <strong>💡 심화 팁</strong> — 이용자 페르소나 사용 후 이렇게 추가해보세요:<br>
+      → <span style="color:var(--accent); font-family:var(--mono)">"그 페르소나가 할 법한 질문 3가지를 더 뽑아줘"</span><br>
+      FAQ 제작 / 교육 자료 설계 / 고객 상담 준비에 즉시 활용 가능
+    </div>
+
+    <!-- 체크리스트 -->
+    <div class="section-title" style="margin-top:24px;margin-bottom:12px;">이용자 페르소나 설계 체크리스트</div>
+    <div class="section-desc" style="margin-bottom:16px;">프롬프트 작성 전 아래 항목을 점검하면 AI가 더 정밀하게 맞춤형 답변을 생성한다</div>
+    <div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div><div class="check-q">이 사람의 직업과 역할은?</div><div class="check-hint">→ AI가 응답의 전문성 수준과 맥락을 설정하는 기준</div></div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div><div class="check-q">이 주제에 대한 사전 지식은?</div><div class="check-hint">→ 초보 = 비유 중심 / 전문가 = 기술 용어 직접 사용</div></div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div><div class="check-q">이 정보로 무엇을 결정하거나 실행할 예정인가?</div><div class="check-hint">→ 이론 중심 vs 실행 중심 중 어느 쪽으로 답할지 결정</div></div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div><div class="check-q">지금 어떤 상태인가? (급함 / 여유)</div><div class="check-hint">→ 급함 = 결론 먼저, 핵심만 / 여유 = 배경 설명 포함</div></div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div><div class="check-q">얼마나 긴 답변을 읽을 여유가 있는가?</div><div class="check-hint">→ 여유 없음 = 3줄 이내 / 여유 있음 = 상세 설명 허용</div></div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div><div class="check-q">가장 두려워하는 것은? / 가장 원하는 것은?</div><div class="check-hint">→ 두려움 = AI가 리스크를 먼저 짚어줌 / 원하는 것 = 목표 향한 답변 구성</div></div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div><div class="check-q">절대 쓰면 안 되는 언어나 표현이 있나?</div><div class="check-hint">→ 네거티브 프롬프팅으로 명시하면 더 정확하게 적용됨</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="chapter-footer">
+  <a href="ch4.html" class="chapter-nav-btn">← 4장</a>
+  <span class="chapter-page-info">5 / 6</span>
+  <a href="ch6.html" class="chapter-nav-btn">6장 →</a>
+</div>
+
+<div class="toast" id="toast">✓ 복사 완료</div>
+<script src="prompt.js"></script>
+</body>
+</html>
